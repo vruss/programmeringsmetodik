@@ -26,15 +26,14 @@ int_buffer::int_buffer(const int *source, size_t size) {
 int_buffer::int_buffer(const int_buffer &rhs) {
     std::cout << "Copy constructor!\n";
 
-    this->int_p = new int;
-    this->length = rhs.length;
-    *(this->int_p) = *(rhs.int_p);
+    *this = rhs;
 }
 
 // Move constructor
-int_buffer::int_buffer(int_buffer &&rhs) {
+int_buffer::int_buffer(int_buffer &&rhs) noexcept {
     std::cout << "Move constructor!\n";
 
+    *this = std::move(rhs);
 }
 
 // Copy-assignment operator
@@ -42,15 +41,26 @@ int_buffer &int_buffer::operator=(const int_buffer &rhs) {
     std::cout << "Copy-assignment operator!\n";
 
     if (this != &rhs) {
-
+        this->length = rhs.length;
+        this->int_p = new int[this->length];
+        std::copy(rhs.begin(), rhs.end(), this->int_p);
     }
+    return *this;
 }
 
 // Move-assign operator
-int_buffer &int_buffer::operator=(int_buffer &&rhs) {
+int_buffer &int_buffer::operator=(int_buffer &&rhs) noexcept {
     std::cout << "Move-assignment operator!\n";
 
-//    return <#initializer#>;
+    if (this != &rhs) {
+        this->length = rhs.length;
+        this->int_p = new int[this->length];
+
+        rhs.length = 0;
+        delete[] rhs.int_p;
+        rhs.int_p = nullptr;
+    }
+    return *this;
 }
 
 // Return buffer size
@@ -65,7 +75,7 @@ int *int_buffer::begin() {
 
 // Return last pointer
 int *int_buffer::end() {
-    return &this->int_p[size()];
+    return this->int_p + size();
 }
 
 // Return read-only first pointer
@@ -80,7 +90,7 @@ const int *int_buffer::end() const {
 
 // Destructor
 int_buffer::~int_buffer() {
-    std::cout << "Destructor!\n";
+    std::cout << "Destructing pointer: " << begin() << std::endl;
 
     delete[] this->int_p;
     this->int_p = nullptr;

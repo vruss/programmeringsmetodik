@@ -23,11 +23,11 @@ public :
     int_buffer(const int *source, size_t size); // resize constructor
 
     int_buffer(const int_buffer &rhs); // copy constructor
-    int_buffer(int_buffer &&rhs); // move constructor
+    int_buffer(int_buffer &&rhs) noexcept ; // move constructor
 
     // Operator overloads
     int_buffer &operator=(const int_buffer &rhs); // copy-assignment operator
-    int_buffer &operator=(int_buffer &&rhs); // move-assign operator
+    int_buffer &operator=(int_buffer &&rhs) noexcept ; // move-assign operator
 
     // Methods
     size_t size() const;
