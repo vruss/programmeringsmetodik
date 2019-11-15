@@ -1,5 +1,8 @@
 //
-// Created by viro on 2019-11-14.
+// Laboration: Dynamisk minneshantering, RAII och merge
+// Author: Viktor Rosvall
+// File name: int_buffer.h - created 2019-11-14 - modified 2019-11-15
+// Definition av klass int_sorted som sköter sorting av en int buffer.
 //
 
 #ifndef LAB1_INT_SORTED_H
@@ -17,8 +20,9 @@ private:
 public:
 
     // Constructors
-    int_sorted() = default;
-    int_sorted(const int* source, size_t size); // resize constructor
+    int_sorted();
+
+    int_sorted(const int* source, size_t length); // resize constructor
 
     // Methods
     size_t size() const;
@@ -29,8 +33,11 @@ public:
 
     const int* end() const;
 
-
     int_sorted merge(const int_sorted& merge_with) const;
+
+    int_sorted sort(const int* begin, const int* end);
+
+    bool isSorted() const;
 };
 
 

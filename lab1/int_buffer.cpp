@@ -1,7 +1,7 @@
 //
 // Laboration: Dynamisk minneshantering, RAII och merge
 // Author: Viktor Rosvall
-// File name: int_buffer.cpp - created 2019-11-10 - modified 2019-11-10
+// File name: int_buffer.cpp - created 2019-11-10 - modified 2019-11-15
 // Implementation av klass int_buffer som sköter en minnesresurs av typen int.
 //
 
@@ -13,60 +13,40 @@
 int_buffer::int_buffer(size_t size)
         : int_p(new int[size]), length(size)
 {
-    std::cout << "Parameter constructor!\n";
 }
 
 // Resize constructor
 int_buffer::int_buffer(const int* source, size_t size)
-        : int_p(new int[size]), length(size)
+        : int_buffer(size)
 {
-    std::cout << "Resize constructor!\n";
-
-    std::copy(source, source + size, int_p);
+    std::copy_n(source, size, int_p);
 }
 
 // Copy constructor
 int_buffer::int_buffer(const int_buffer& rhs)
-        : int_p(new int[rhs.size()]), length(rhs.size())
+        : int_buffer(rhs.begin(), rhs.length)
 {
-    std::cout << "Copy constructor!\n";
-    std::copy(rhs.begin(), rhs.end(), int_p);
 }
 
 // Move constructor
 int_buffer::int_buffer(int_buffer&& rhs) noexcept
-        : int_p(nullptr), length(0)
+        : int_buffer(nullptr, 0)
 {
-    std::cout << "Move constructor!\n";
-    *this = std::move(rhs);
+    swap(rhs); // swap rhs with null object
 }
 
 // Copy-assignment operator
 int_buffer& int_buffer::operator=(const int_buffer& rhs)
 {
-    std::cout << "Copy-assignment operator!\n";
-
-    if (this != &rhs)
-    {
-        int_buffer buff(rhs.begin(), rhs.size());
-        *this = std::move(buff);
-    }
+    int_buffer tmp(rhs);
+    swap(tmp);
     return *this;
 }
 
 // Move-assign operator
 int_buffer& int_buffer::operator=(int_buffer&& rhs) noexcept
 {
-    std::cout << "Move-assignment operator!\n";
-
-    if (this != &rhs)
-    {
-        length = rhs.length;
-        int_p = rhs.int_p;
-
-        rhs.length = 0;
-        rhs.int_p = nullptr;
-    }
+    swap(rhs);
     return *this;
 }
 
@@ -85,7 +65,7 @@ int* int_buffer::begin()
 // Return last pointer
 int* int_buffer::end()
 {
-    return int_p + size();
+    return int_p + length;
 }
 
 // Return read-only first pointer
@@ -97,13 +77,27 @@ const int* int_buffer::begin() const
 // Return read-only last pointer
 const int* int_buffer::end() const
 {
-    return &int_p[size()];
+    return &int_p[length];
 }
 
 // Destructor
 int_buffer::~int_buffer()
 {
-    std::cout << "Destructing pointer: " << begin() << std::endl;
-
     delete[] int_p;
+}
+
+void int_buffer::swap(int_buffer& rhs)
+{
+    std::swap(length, rhs.length);
+    std::swap(int_p, rhs.int_p);
+}
+
+int& int_buffer::operator[](size_t index)
+{
+    return int_p[index];
+}
+
+const int& int_buffer::operator[](size_t index) const
+{
+    return int_p[index];
 }
