@@ -36,7 +36,7 @@ int main()
 
 
     // Sorting phase tests ***
-    int_buffer buff6(int_list2, 2);
+    int_buffer buff6(int_list1, 5);
     int_buffer buff7 = generateRandomNumbers(5);
     print(buff6);
     print(buff7);
@@ -47,10 +47,10 @@ int main()
     print(sorted2);
 
     int_sorted sorted3 = sorted1.merge(sorted2);
+    sorted3.insert(9);
     print(sorted3);
     return 0;
 }
-
 
 
 int_buffer generateRandomNumbers(int n)

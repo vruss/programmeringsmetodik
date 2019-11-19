@@ -5,6 +5,7 @@
 // Implementation av klass int_sorted som sköter sorting av en int buffer.
 //
 
+#include <algorithm>
 #include "int_sorted.h"
 
 int_sorted::int_sorted()
@@ -15,9 +16,16 @@ int_sorted::int_sorted()
 int_sorted::int_sorted(const int* source, size_t length)
         : buffer(source, length)
 {
-    if(size() != 1 && !isSorted()) {
+    if (size() != 1)
+    {
         *this = sort(source, source + length);
     }
+}
+
+int_sorted::int_sorted(const int_buffer& buffer)
+        : buffer(buffer)
+{
+
 }
 
 size_t int_sorted::size() const
@@ -27,7 +35,8 @@ size_t int_sorted::size() const
 
 int* int_sorted::insert(int value)
 {
-    return nullptr;
+    *this = merge(int_sorted(&value, 1));
+    return std::find(buffer.begin(), buffer.end(), value);
 }
 
 const int* int_sorted::begin() const
@@ -83,7 +92,7 @@ int_sorted int_sorted::merge(const int_sorted& merge_with) const
     }
 
     // Create a new sorted buffer
-    return int_sorted(tmpBuffer.begin(), sz);
+    return int_sorted(tmpBuffer);
 }
 
 int_sorted int_sorted::sort(const int* begin, const int* end)
@@ -115,3 +124,5 @@ bool int_sorted::isSorted() const
     }
     return true;
 }
+
+
