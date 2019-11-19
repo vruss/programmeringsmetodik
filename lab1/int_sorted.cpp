@@ -1,7 +1,7 @@
 //
 // Laboration: Dynamisk minneshantering, RAII och merge
 // Author: Viktor Rosvall
-// File name: int_buffer.h - created 2019-11-14 - modified 2019-11-15
+// File name: int_buffer.h - created 2019-11-14 - modified 2019-11-19
 // Implementation av klass int_sorted som sköter sorting av en int buffer.
 //
 
@@ -15,7 +15,7 @@ int_sorted::int_sorted()
 int_sorted::int_sorted(const int* source, size_t length)
         : buffer(source, length)
 {
-    if(size() != 1) {
+    if(size() != 1 && !isSorted()) {
         *this = sort(source, source + length);
     }
 }
@@ -44,50 +44,46 @@ const int* int_sorted::end() const
 int_sorted int_sorted::merge(const int_sorted& merge_with) const
 {
     size_t sz = merge_with.size() + buffer.size();
-    int_buffer new_buffer(sz);
-    int_sorted new_sorted(new_buffer.begin(), sz);
+    int_buffer tmpBuffer(sz);
 
-    auto new_sorted_it = new_sorted.buffer.begin();
+    auto buffer_it = tmpBuffer.begin();
     auto lhs_it = buffer.begin();
     auto rhs_it = merge_with.begin();
 
     // Iterate until either lhs or rhs is finished
     while (lhs_it != buffer.end() && rhs_it != merge_with.end())
     {
-        // Determine what to write to new_buffer
+        // Determine what to write to tmpBuffer
         if (*lhs_it < *rhs_it)
         {
-            // Write lhs to new_buffer
-            *new_sorted_it = *lhs_it;
-            lhs_it++;
-            new_sorted_it++;
+            // Write lhs to tmpBuffer
+            *buffer_it = *lhs_it++;
+            buffer_it++;
         }
         else
         {
-            // Write rhs to new_buffer
-            *new_sorted_it = *rhs_it;
-            rhs_it++;
-            new_sorted_it++;
+            // Write rhs to tmpBuffer
+            *buffer_it = *rhs_it++;
+            buffer_it++;
         }
     }
 
     while (lhs_it != buffer.end())
     {
-        // Write lhs to new_buffer
-        *new_sorted_it = *lhs_it;
-        lhs_it++;
-        new_sorted_it++;
+        // Write lhs to tmpBuffer
+        *buffer_it = *lhs_it++;
+        buffer_it++;
     }
 
     while (rhs_it != merge_with.end())
     {
-        // Write rhs to new_buffer
-        *new_sorted_it = *rhs_it;
-        rhs_it++;
-        new_sorted_it++;
+        // Write rhs to tmpBuffer
+        *buffer_it = *rhs_it++;
+        buffer_it++;
     }
 
-    return new_sorted;
+    // Create a new sorted buffer
+    return int_sorted(tmpBuffer.begin(), sz);
 }
 
 int_sorted int_sorted::sort(const int* begin, const int* end)

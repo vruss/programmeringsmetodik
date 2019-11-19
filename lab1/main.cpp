@@ -18,13 +18,14 @@ void print(const int_sorted& buffer);
 
 int main()
 {
-    int int_list[5] = {2, 3, 1, 6, 5};
+    int int_list1[5] = {2, 3, 1, 6, 5};
+    int int_list2[2] = {3, 2};
 
     int_buffer buff1(10); // parameter constructor
 
     int_buffer buff2 = buff1; // copy-assignment constructor
 
-    int_buffer buff3(int_list, 5); // resize constructor
+    int_buffer buff3(int_list1, 5); // resize constructor
 
     buff1 = buff3; // copy-assignment operator
 
@@ -35,8 +36,8 @@ int main()
 
 
     // Sorting phase tests ***
-    int_buffer buff6(int_list, 5);
-    int_buffer buff7 = generateRandomNumbers(2);
+    int_buffer buff6(int_list2, 2);
+    int_buffer buff7 = generateRandomNumbers(5);
     print(buff6);
     print(buff7);
 
