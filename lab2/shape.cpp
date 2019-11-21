@@ -4,7 +4,13 @@
 
 #include "shape.h"
 
-std::string shape::get_colour() const
+shape::shape(char* colour) : colour(colour)
+{
+}
+
+char* shape::get_colour() const
 {
     return colour;
 }
+
+

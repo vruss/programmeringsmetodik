@@ -3,14 +3,28 @@
 //
 
 #include "gtest/gtest.h"
-
+#include "../circle.h"
 
 class Tests : public ::testing::Test
 {
+public:
 
+
+     void SetUp()
+    {
+//        c = circle(text);
+    }
+
+     void TearDown()
+    {
+
+    }
+
+    char text[4] = "Red";
+    circle c = circle(text, 3);
 };
 
-TEST(Tests, TestName)
+TEST_F(Tests, get_colour)
 {
-    EXPECT_EQ("", "");
+    EXPECT_EQ(c.get_colour(), text);
 }

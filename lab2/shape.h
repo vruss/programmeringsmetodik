@@ -6,14 +6,17 @@
 #define LAB2_SHAPE_H
 
 
-
 class shape
 {
 private:
     char* colour;
 
 public:
-    virtual char* get_colour() const = 0;
+    explicit shape(char* colour);
+
+    char* get_colour() const;
+
+    virtual double get_area() const = 0;
 
 };
 

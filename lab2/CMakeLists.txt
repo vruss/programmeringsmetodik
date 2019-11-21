@@ -3,6 +3,6 @@ project(lab2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(lab2 main.cpp shape.cpp shape.h)
+add_executable(lab2 main.cpp shape.cpp shape.h circle.cpp circle.h)
 
 add_subdirectory(tests)
