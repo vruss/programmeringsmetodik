@@ -5,7 +5,6 @@
 #ifndef LAB2_CIRCLE_H
 #define LAB2_CIRCLE_H
 
-#include <cmath>
 
 #include "shape.h"
 
@@ -19,6 +18,8 @@ public:
     circle(char* colour, double radius);
 
     double get_area() const override;
+
+    double getRadius() const;
 };
 
 

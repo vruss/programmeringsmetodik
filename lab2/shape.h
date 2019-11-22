@@ -1,5 +1,5 @@
 //
-// Created by julia on 2019-11-20.
+// Created by viro on 2019-11-20.
 //
 
 #ifndef LAB2_SHAPE_H

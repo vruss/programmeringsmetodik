@@ -1,33 +1,40 @@
 #include <iostream>
+#include <bits/unique_ptr.h>
+#include <vector>
 #include "circle.h"
+#include "cylinder.h"
+#include "rectangle.h"
+#include "parallelepiped.h"
+#include "rounded_rectangle.h"
 
-void get_data(shape* shapes, size_t size);
+typedef std::vector<std::unique_ptr<shape>> shape_uptr;
+
+
+void get_data(const shape_uptr& shapes);
 
 int main()
 {
-    size_t arr_size = 10;
-    char colour1[4] = "Red";
-    char colour2[5] = "Blue";
+    char red[4] = "Red";
+    char blue[5] = "Blue";
 
-    shape* shapes;
+    shape_uptr shapes;
 
-    // Kolla på vector och std::Fill
-    shapes[0] = circle(colour1, 2);
+    shapes.push_back(std::make_unique<circle>(red, 2));
+    shapes.push_back(std::make_unique<cylinder>(blue, 3, 4));
+    shapes.push_back(std::make_unique<rectangle>(blue, 3, 3));
+    shapes.push_back(std::make_unique<parallelepiped>(blue, 13, 15, 22));
+    shapes.push_back(std::make_unique<rounded_rectangle>(red, 100, 200, 20));
 
-     circle c(colour2, 4);
-    shapes[1] = &c;
-
-    get_data(shapes, arr_size);
+    get_data(shapes);
     return 0;
 }
 
-void get_data(shape* shapes, size_t size)
+void get_data(const shape_uptr& shapes)
 {
-    for (size_t i = 0; i < size; i++)
+    for (auto& s : shapes)
     {
-        std::cout << "Colour\t" << shapes->get_colour()
-                  << "\tarea: " << shapes->get_area()
+        std::cout << "Colour\t" << s->get_colour()
+                  << "\t\tarea: " << s->get_area()
                   << "\n";
-        shapes++;
     }
 }

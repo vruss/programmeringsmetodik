@@ -25,7 +25,6 @@ int_sorted::int_sorted(const int* source, size_t length)
 int_sorted::int_sorted(const int_buffer& buffer)
         : buffer(buffer)
 {
-
 }
 
 size_t int_sorted::size() const

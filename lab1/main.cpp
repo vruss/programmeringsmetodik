@@ -23,7 +23,7 @@ int main()
 
     int_buffer buff1(10); // parameter constructor
 
-    int_buffer buff2 = buff1; // copy-assignment constructor
+    int_buffer buff2 = buff1; // copy constructor
 
     int_buffer buff3(int_list1, 5); // resize constructor
 
@@ -37,7 +37,7 @@ int main()
 
     // Sorting phase tests ***
     int_buffer buff6(int_list1, 5);
-    int_buffer buff7 = generateRandomNumbers(5);
+    int_buffer buff7 = generateRandomNumbers(10);
     print(buff6);
     print(buff7);
 
@@ -57,7 +57,7 @@ int_buffer generateRandomNumbers(int n)
 {
     int_buffer buff(n);
     std::random_device generator;
-    std::uniform_int_distribution<int> rnd(0, 100);
+    std::uniform_int_distribution<int> rnd(0, n);
 
     for (int& element : buff)
     {
