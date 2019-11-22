@@ -12,6 +12,5 @@ rounded_rectangle::rounded_rectangle(char* colour, double width, double height, 
 
 double rounded_rectangle::get_area() const
 {
-    return rectangle::getHeight() * rectangle::getWidth()
-           - (radius * radius) * (4 - M_PI);
+    return height * width - (radius * radius) * (4 - M_PI);
 }

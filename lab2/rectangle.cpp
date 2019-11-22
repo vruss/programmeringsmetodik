@@ -14,12 +14,3 @@ double rectangle::get_area() const
     return width * height;
 }
 
-double rectangle::getWidth() const
-{
-    return width;
-}
-
-double rectangle::getHeight() const
-{
-    return height;
-}

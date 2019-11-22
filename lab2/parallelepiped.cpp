@@ -11,6 +11,5 @@ parallelepiped::parallelepiped(char* colour, double width, double height, double
 
 double parallelepiped::get_area() const
 {
-    return (rectangle::getWidth() * 2 + rectangle::getHeight() * 2) * length
-           + 2 * rectangle::get_area();
+    return (width * 2 + height * 2) * length + 2 * rectangle::get_area();
 }

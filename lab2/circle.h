@@ -11,7 +11,7 @@
 
 class circle : public shape
 {
-private:
+protected:
     double radius;
 
 public:
@@ -19,7 +19,6 @@ public:
 
     double get_area() const override;
 
-    double getRadius() const;
 };
 
 

@@ -10,7 +10,7 @@
 
 class rounded_rectangle : public rectangle
 {
-private:
+protected:
     double radius;
 public:
     rounded_rectangle(char* colour, double width, double height, double radius);

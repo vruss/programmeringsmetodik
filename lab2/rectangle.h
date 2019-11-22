@@ -10,17 +10,13 @@
 
 class rectangle : public shape
 {
-private:
+protected:
     double width;
     double height;
 public:
     rectangle(char* colour, double width, double height);
 
     double get_area() const override;
-
-    double getWidth() const;
-
-    double getHeight() const;
 };
 
 

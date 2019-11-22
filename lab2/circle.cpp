@@ -14,8 +14,3 @@ double circle::get_area() const
 {
     return M_PI * (radius * radius);
 }
-
-double circle::getRadius() const
-{
-    return radius;
-}

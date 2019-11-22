@@ -12,5 +12,5 @@ cylinder::cylinder(char* colour, double radius, double height)
 
 double cylinder::get_area() const
 {
-    return 2 * circle::get_area() + 2 * M_PI * circle::getRadius() * height;
+    return 2 * circle::get_area() + 2 * M_PI * radius * height;
 }

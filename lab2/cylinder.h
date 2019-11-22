@@ -10,7 +10,7 @@
 
 class cylinder : public circle
 {
-private:
+protected:
     double height;
 public:
     cylinder(char* colour, double radius, double height);
