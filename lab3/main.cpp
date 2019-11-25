@@ -74,16 +74,21 @@ int main()
 
 
     // Check sales
-    while (!sell_orders.empty() && !buy_orders.empty())
+    while (!sell_orders.empty())
     {
         auto sell_ord = sell_orders.pop();
-        auto buy_ord = buy_orders.pop();
 
-        if (sell_ord.price < buy_ord.max_price && sell_ord.seller_name != buy_ord.buyer_name)
+        // Find buyer
+        while (!buy_orders.empty())
         {
-            std::cout << buy_ord.buyer_name << " bought from "
-                      << sell_ord.seller_name << " price: "
-                      << sell_ord.price << "\n";
+            auto buy_ord = buy_orders.pop();
+            if (sell_ord.price < buy_ord.max_price && sell_ord.seller_name != buy_ord.buyer_name)
+            {
+                std::cout << buy_ord.buyer_name << " bought from "
+                          << sell_ord.seller_name << " price: "
+                          << sell_ord.price << "\n";
+
+            }
         }
     }
 
