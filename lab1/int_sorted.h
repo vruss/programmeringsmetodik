@@ -17,7 +17,7 @@ class int_sorted
 private:
     int_buffer buffer;
 
-    int_sorted(const int_buffer& buffer);
+    explicit int_sorted(const int_buffer& buffer);
 
 public:
 

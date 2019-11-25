@@ -23,7 +23,7 @@ int main()
     shapes.push_back(std::make_unique<cylinder>(blue, 3, 4));
     shapes.push_back(std::make_unique<rectangle>(blue, 3, 3));
     shapes.push_back(std::make_unique<parallelepiped>(blue, 13, 15, 22));
-    shapes.push_back(std::make_unique<rounded_rectangle>(red, 100, 200, 20));
+    shapes.push_back(std::make_unique<rounded_rectangle>(red, 13, 15, 2));
 
     get_data(shapes);
     return 0;
