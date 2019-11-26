@@ -42,35 +42,22 @@ int main()
     p_queue<sell_order> sell_orders;
     p_queue<buy_order> buy_orders;
 
-    // Generate sell orders
+    // Generate buy and sell orders
     for (int i = 0; i < 7; i++)
     {
         sell_orders.push({"Erik Pendel", get_random_int()});
-    }
-
-    for (int i = 0; i < 7; i++)
-    {
-        sell_orders.push({"Jarl Wallenburg", get_random_int()});
-    }
-    for (int i = 0; i < 7; i++)
-    {
-        sell_orders.push({"Joakim von Anka", get_random_int()});
-    }
-
-    // Generate buy orders
-    for (int i = 0; i < 7; i++)
-    {
         buy_orders.push({"Erik Pendel", get_random_int()});
-    }
 
-    for (int i = 0; i < 7; i++)
-    {
+        sell_orders.push({"Jarl Wallenburg", get_random_int()});
         buy_orders.push({"Jarl Wallenburg", get_random_int()});
-    }
-    for (int i = 0; i < 7; i++)
-    {
+
+        sell_orders.push({"Joakim von Anka", get_random_int()});
         buy_orders.push({"Joakim von Anka", get_random_int()});
     }
+
+
+    std::cout << sell_orders.size() << " \tsell orders and "
+              << buy_orders.size() << " \t buy orders\n";
 
 
     // Check sales
@@ -82,6 +69,7 @@ int main()
         while (!buy_orders.empty())
         {
             auto buy_ord = buy_orders.pop();
+            // Buy from yourself?
             if (sell_ord.price <= buy_ord.max_price && sell_ord.seller_name != buy_ord.buyer_name)
             {
                 std::cout << buy_ord.buyer_name << " bought from "
@@ -90,7 +78,14 @@ int main()
                 break;
             }
         }
+        // Break if no buy orders are left
+        if (buy_orders.empty())
+            break;
     }
+
+
+    std::cout << sell_orders.size() << " sell orders left and\t"
+              << buy_orders.size() << " buy orders left\n";
 
     return 0;
 }
