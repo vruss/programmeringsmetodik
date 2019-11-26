@@ -2,33 +2,17 @@
 #include <random>
 #include "p_queue.h"
 
-struct sell_order
+struct order
 {
-    std::string seller_name;
+    std::string name;
     int price;
 
-    bool operator<(const sell_order& rhs) const
+    bool operator<(const order& rhs) const
     {
         return price < rhs.price;
     }
 
-    bool operator>(const sell_order& rhs) const
-    {
-        return rhs < *this;
-    }
-};
-
-struct buy_order
-{
-    std::string buyer_name;
-    int max_price;
-
-    bool operator<(const buy_order& rhs) const
-    {
-        return max_price < rhs.max_price;
-    }
-
-    bool operator>(const buy_order& rhs) const
+    bool operator>(const order& rhs) const
     {
         return rhs < *this;
     }
@@ -39,10 +23,10 @@ int get_random_int();
 
 int main()
 {
-    p_queue<sell_order> sell_orders;
-    p_queue<buy_order> buy_orders;
+    p_queue<order> sell_orders;
+    p_queue<order> buy_orders;
 
-    // Generate buy and sell orders
+    // Generate buy and sell buy_orders
     for (int i = 0; i < 7; i++)
     {
         sell_orders.push({"Erik Pendel", get_random_int()});
@@ -56,8 +40,8 @@ int main()
     }
 
 
-    std::cout << sell_orders.size() << " \tsell orders and "
-              << buy_orders.size() << " \t buy orders\n";
+    std::cout << sell_orders.size() << " \tsell buy_orders and "
+              << buy_orders.size() << " \t buy buy_orders\n";
 
 
     // Check sales
@@ -70,22 +54,22 @@ int main()
         {
             auto buy_ord = buy_orders.pop();
             // Buy from yourself?
-            if (sell_ord.price <= buy_ord.max_price && sell_ord.seller_name != buy_ord.buyer_name)
+            if (sell_ord.price <= buy_ord.price && sell_ord.name != buy_ord.name)
             {
-                std::cout << buy_ord.buyer_name << " bought from "
-                          << sell_ord.seller_name << " price: "
+                std::cout << buy_ord.name << " bought from "
+                          << sell_ord.name << " price: "
                           << sell_ord.price << "\n";
                 break;
             }
         }
-        // Break if no buy orders are left
+        // Break if no buy buy_orders are left
         if (buy_orders.empty())
             break;
     }
 
 
-    std::cout << sell_orders.size() << " sell orders left and\t"
-              << buy_orders.size() << " buy orders left\n";
+    std::cout << sell_orders.size() << " sell buy_orders left and\t"
+              << buy_orders.size() << " buy buy_orders left\n";
 
     return 0;
 }
