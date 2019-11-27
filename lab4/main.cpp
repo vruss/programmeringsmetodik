@@ -3,9 +3,11 @@
 #include "mailbox.h"
 
 template <typename T >
-void show(const T& vec) {
-    for(const auto& mail: vec) {
-        std::cout << mail << "\n";
+void show(const T& type)
+{
+    for (const auto& e: type)
+    {
+        std::cout << e << "\n";
     }
 }
 
@@ -27,27 +29,20 @@ int main()
 
     std::cout << "Original mailbox\n";
     show(mails);
-//    for(const auto& mail: mails) {
-//        std::cout << mail << "\n";
-//    }
 
     std::cout << "\nSorted by date mailbox\n";
     mails.sort_date();
     show(mails);
-//    for(const auto& mail: mails) {
-//        std::cout << mail << "\n";
-//    }
 
     std::cout << "\nSorted by who mailbox\n";
     mails.sort_who();
     show(mails);
-//    for(const auto& mail: mails) {
-//        std::cout << mail << "\n";
-//    }
 
     std::cout << "\nSorted by subject mailbox\n";
     mails.sort_subject();
     show(mails);
+
+
 //    for(const auto& mail: mails) {
 //        std::cout << mail << "\n";
 //    }
