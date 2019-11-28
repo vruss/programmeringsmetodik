@@ -28,6 +28,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const monitor& monitor);
 
+    double getInches() const;
 };
 
 

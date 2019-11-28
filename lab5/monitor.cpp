@@ -32,3 +32,8 @@ std::ostream& operator<<(std::ostream& os, const monitor& monitor)
        << " inches: " << monitor.inches;
     return os;
 }
+
+double monitor::getInches() const
+{
+    return inches;
+}
