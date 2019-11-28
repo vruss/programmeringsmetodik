@@ -13,7 +13,7 @@ class p_queue
 {
 private:
     std::list<T> container;
-    static bool less(const T &a, const T &b) {return a < b;}
+//    static bool less(const T &a, const T &b) {return a < b;}
 
 public:
     p_queue() = default;
@@ -44,7 +44,7 @@ template<typename T>
 void p_queue<T>::push(T element)
 {
     container.push_back(element);
-    container.sort(less);
+    container.sort(std::less<T>());
 }
 
 template<typename T>

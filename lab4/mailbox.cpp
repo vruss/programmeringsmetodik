@@ -30,23 +30,22 @@ unsigned long mailbox::size()
     return emails.size();
 }
 
-iterator mailbox::begin()
+std::vector<email>::iterator mailbox::begin()
 {
     return emails.begin();
 }
 
-const_iterator mailbox::begin() const
+std::vector<email>::const_iterator mailbox::begin() const
 {
     return emails.begin();
 }
 
-
-iterator mailbox::end()
+std::vector<email>::iterator mailbox::end()
 {
     return emails.end();
 }
 
-const_iterator mailbox::end() const
+std::vector<email>::const_iterator mailbox::end() const
 {
     return emails.end();
 }

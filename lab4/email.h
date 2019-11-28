@@ -9,6 +9,7 @@
 #include <string>
 #include <ostream>
 
+
 class email
 {
 private:
@@ -32,92 +33,20 @@ public:
 
 };
 
-// Predicate implementations
+// Predicates
 struct comp_date_who_subject
 {
-    bool operator()(const email& lhs, const email& rhs)
-    {
-        if (lhs.date < rhs.date)
-        {
-            return true;
-        }
-        if (lhs.date == rhs.date)
-        {
-            if (lhs.who < rhs.who)
-            {
-                return true;
-            }
-        }
-        if (lhs.date == rhs.date)
-        {
-            if (lhs.who == rhs.who)
-            {
-                if (lhs.subject < rhs.subject)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    bool operator()(const email& lhs, const email& rhs);
 };
 
 struct comp_who_date_subject
 {
-    bool operator()(const email& lhs, const email& rhs)
-    {
-        if (lhs.who < rhs.who)
-        {
-            return true;
-        }
-        if (lhs.who == rhs.who)
-        {
-            if (lhs.date < rhs.date)
-            {
-                return true;
-            }
-        }
-        if (lhs.who == rhs.who)
-        {
-            if (lhs.date == rhs.date)
-            {
-                if (lhs.subject < rhs.subject)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    bool operator()(const email& lhs, const email& rhs);
 };
 
 struct comp_subject_who_date
 {
-    bool operator()(const email& lhs, const email& rhs)
-    {
-        if (lhs.subject < rhs.subject)
-        {
-            return true;
-        }
-        if (lhs.subject == rhs.subject)
-        {
-            if (lhs.who < rhs.who)
-            {
-                return true;
-            }
-        }
-        if (lhs.subject == rhs.subject)
-        {
-            if (lhs.who == rhs.who)
-            {
-                if (lhs.date < rhs.date)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    bool operator()(const email& lhs, const email& rhs);
 };
 
 

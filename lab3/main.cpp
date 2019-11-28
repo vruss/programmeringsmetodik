@@ -53,8 +53,7 @@ int main()
         while (!buy_orders.empty())
         {
             auto buy_ord = buy_orders.pop();
-            // Buy from yourself?
-            if (sell_ord.price <= buy_ord.price && sell_ord.name != buy_ord.name)
+            if (sell_ord.price <= buy_ord.price)
             {
                 std::cout << buy_ord.name << " bought from "
                           << sell_ord.name << " price: "

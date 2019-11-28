@@ -9,8 +9,6 @@
 #include <vector>
 #include "email.h"
 
-typedef __gnu_cxx::__normal_iterator<email*, std::vector<email>> iterator;
-typedef const __gnu_cxx::__normal_iterator<const email*, std::vector<email>> const_iterator;
 
 class mailbox
 {
@@ -34,13 +32,13 @@ public:
 
     unsigned long size();
 
-    iterator begin();
+    std::vector<email>::iterator begin();
 
-    const_iterator begin() const;
+    std::vector<email>::const_iterator begin() const;
 
-    iterator end();
+    std::vector<email>::iterator end();
 
-    const_iterator end() const;
+    std::vector<email>::const_iterator end() const;
 };
 
 #endif //LAB4_MAILBOX_H
