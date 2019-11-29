@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <numeric>
 #include "monitor.h"
 #include "print.h"
 #include "is_greater.h"
+#include "bin_op.h"
+#include "un_op.h"
 
 
 int main()
@@ -54,9 +57,24 @@ int main()
     if (m5 != monitors.end())
     {
         std::for_each(m5, monitors.end() - bounds, print());
-
     }
 
+    // 6.
+    std::cout << "\n6\n";
+    auto sum = std::accumulate(monitors.begin(), monitors.end(), 0,
+                               bin_op<double>());
+    std::cout << "The average inch size is: " << sum / monitor_arr_size << "\n";
 
-    return 0;
+    // 7.
+    std::cout << "\n7\n";
+    std::vector<monitor> monitors2(monitor_arr_size);
+    std::transform(monitors.begin(), monitors.end(),
+                   monitors2.begin(), un_op<monitor>());
+    std::for_each(monitors2.begin(), monitors2.end(), print());
+
+    // 8.
+    std::cout << "\n8\n";
+//    std::transform(monitors2.begin(), monitors2.end(),
+//                   monitors2.begin());
+//    return 0;
 }

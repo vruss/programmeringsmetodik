@@ -18,7 +18,7 @@ private:
     double inches;
 
 public:
-    monitor() = delete;
+    monitor() = default;
 
     monitor(const std::string& name, const std::string& brand, const std::string& resolution, double inches);
 

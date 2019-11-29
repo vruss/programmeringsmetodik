@@ -4,15 +4,6 @@
 
 #include "is_greater.h"
 
-//bool is_greater::operator()(const monitor& lhs, const monitor& rhs)
-//{
-//    return lhs == rhs;
-//}
-
-//bool is_greater::operator()(double greater)
-//{
-//    return 3 < greater;
-//}
 
 is_greater::is_greater(double value)
         : value(value)

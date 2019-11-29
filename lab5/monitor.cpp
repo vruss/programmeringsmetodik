@@ -4,13 +4,7 @@
 
 #include "monitor.h"
 
-/**
- *
- * @param name
- * @param brand
- * @param resolution
- * @param inches
- */
+
 monitor::monitor(const std::string& name, const std::string& brand, const std::string& resolution, double inches)
         : name(name), brand(brand), resolution(resolution), inches(inches)
 {
@@ -37,3 +31,4 @@ double monitor::getInches() const
 {
     return inches;
 }
+
