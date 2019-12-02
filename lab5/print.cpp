@@ -3,3 +3,15 @@
 //
 
 #include "print.h"
+
+
+void print::operator()(const monitor& monitor)
+{
+    std::cout << monitor << std::endl;
+}
+
+void print::operator()(double value)
+{
+    std::cout << value << std::endl;
+
+}

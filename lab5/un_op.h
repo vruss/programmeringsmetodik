@@ -8,16 +8,13 @@
 
 #include "monitor.h"
 
-template<typename T>
 class un_op
 {
 private:
 
 public:
-    T operator()(const T& a)
-    {
-        return a;
-    }
+    double operator()(const monitor& monitor);
+
 
 };
 

@@ -13,7 +13,7 @@ class is_greater
 private:
     double value;
 public:
-    is_greater(double value);
+    explicit is_greater(double value);
 
     bool operator()(const monitor& monitor);
 

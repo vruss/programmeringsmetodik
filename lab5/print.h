@@ -12,10 +12,9 @@
 class print
 {
 public:
-    void operator()(const monitor& monitor)
-    {
-        std::cout << monitor << std::endl;
-    }
+    void operator()(const monitor& monitor);
+
+    void operator()(double value);
 };
 
 
