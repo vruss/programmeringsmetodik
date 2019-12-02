@@ -4,11 +4,26 @@
 
 #include "email.h"
 
+/**
+ * Constructor
+ *
+ * @brief Short description
+ *
+ * @param who dsd
+ * @param date as d
+ * @param subject as dsa
+ */
 email::email(std::string who, std::string date, std::string subject)
         : who(who), date(date), subject(subject)
 {
 }
 
+/**
+ * dsidhsad
+ * @param os
+ * @param email
+ * @return
+ */
 std::ostream& operator<<(std::ostream& os, const email& email)
 {
     os << "who: " << email.who << " date: " << email.date << " subject: " << email.subject;

@@ -18,6 +18,7 @@ private:
     std::string subject;
 
 public:
+
     email() = default;
 
     email(std::string who, std::string date, std::string subject);

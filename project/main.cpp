@@ -1,9 +1,18 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main()
 {
-    // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
+    // Get preferred resolution and BPP
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    // Create a window with the same pixel depth as the desktop
+    sf::RenderWindow window(
+            desktop,
+            "SFML window",
+            sf::Style::Fullscreen
+    );
+    window.setVerticalSyncEnabled(true); // VSync
+
 
     // Load a sprite to display
     sf::Texture texture;
@@ -21,7 +30,7 @@ int main()
     // Start the game loop
     while (window.isOpen())
     {
-        // Process events
+        // Check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -29,12 +38,11 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        // Clear screen
+
         window.clear();
-        // Draw the sprite
         window.draw(sprite);
-        // Draw the string
         window.draw(text);
+
         // Update the window
         window.display();
     }
