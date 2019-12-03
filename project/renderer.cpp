@@ -11,7 +11,7 @@ renderer::renderer(sf::RenderWindow* window, const std::list<sf::Drawable*>& obj
 }
 
 renderer::renderer(renderer&& rhs) noexcept
-        : renderer(nullptr, std::list<sf::Drawable*>(), 0, std::mutex())
+        : renderer(nullptr, std::list<sf::Drawable*>(), 0, nullptr)
 {
     swap(rhs); // swap rhs with null object
 }
@@ -47,7 +47,7 @@ void renderer::swap(renderer& rhs)
 void renderer::draw()
 {
     std::lock_guard<std::mutex> lockWindow(*windowMutex);
-    for(int i = 0; i < 100000; i++)
+    for(int i = 0; i < 1000000; i++)
     {
         *a = *a + 1;
     }

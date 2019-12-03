@@ -36,7 +36,7 @@ int* counter = new int(0);
 void eventHandler(sf::Event& event, sf::RenderWindow& window, std::mutex& windowMutex)
 {
     std::lock_guard<std::mutex> lockWindow(windowMutex);
-    for(int i = 0; i < 100000; i++)
+    for(int i = 0; i < 1000000; i++)
     {
         *counter = *counter + 1;
     }
