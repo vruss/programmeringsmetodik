@@ -9,6 +9,7 @@
 #endif
 
 #include "renderer.h"
+#include "snake.h"
 
 void eventHandler(sf::Event& event, sf::RenderWindow& window)
 {
@@ -41,31 +42,53 @@ int main()
     window.setPosition(sf::Vector2i(0, 0));
 
     // Create objects to be drawn
-    sf::RectangleShape rectangleShape(sf::Vector2f(50.0f, 50.0f));
+    snake snake1(sf::Vector2f(50, 50), sf::Vector2f(50, 50));
     std::list<sf::Drawable*> objects;
-    objects.push_back(&rectangleShape);
-
+    objects.push_back(&snake1);
 
     // Graphics and event loop
     renderer gameRenderer(&window, objects);
     sf::Event event;
     while (window.isOpen())
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+
+        auto snakeDirection = snake1.getCurrentDirection();
+        switch (snakeDirection)
         {
-            rectangleShape.move(0, 1);
+            case direction::up:
+                snake1.move(0, -1);
+                break;
+            case direction::right:
+                snake1.move(1, 0);
+                break;
+            case direction::down:
+                snake1.move(0, 1);
+                break;
+            case direction::left:
+                snake1.move(-1, 0);
+                break;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
+            && snakeDirection != direction::up)
         {
-            rectangleShape.move(0, -1);
+            snake1.setCurrentDirection(direction::down);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+            && snakeDirection != direction::down)
         {
-            rectangleShape.move(-1, 0);
+            snake1.setCurrentDirection(direction::up);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)
+            && snakeDirection != direction::right)
         {
-            rectangleShape.move(1, 0);
+            snake1.setCurrentDirection(direction::left);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)
+            && snakeDirection != direction::left)
+        {
+            snake1.setCurrentDirection(direction::right);
         }
 
 
