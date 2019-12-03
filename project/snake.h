@@ -20,7 +20,7 @@ enum class direction
 class snake : public sf::RectangleShape
 {
 private:
-    direction currentDirection = direction::right;
+    direction currentDirection;
 
 public:
     explicit snake(const sf::Vector2f& position, const sf::Vector2f& size);
