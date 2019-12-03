@@ -7,36 +7,36 @@
 
 
 #include <list>
-#include <mutex>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
+/**
+ * @brief   Class used to render objects to the screen
+ */
 class renderer
 {
 private:
     sf::RenderWindow* window;
     std::list<sf::Drawable*> objects;
-    std::mutex* windowMutex;
-    int* a;
-
-    void draw();
 
 public:
-    renderer(sf::RenderWindow* window,
-             const std::list<sf::Drawable*>& objects,
-             int* a,
-             std::mutex* windowMutex);
 
-    renderer(std::mutex* windowMutex);
+    /**
+     * @brief Constructs a renderer for drawing objects.
+     *
+     * Constructs a renderer that will draw the passed in objects to the
+     * window handle.
+     *
+     * @param window    handle used for drawing
+     * @param objects   drawable objects to be drawn
+     */
+    explicit renderer(sf::RenderWindow* window, const std::list<sf::Drawable*>& objects);
 
-    renderer(const renderer& rhs);
-
-    renderer(renderer&& rhs) noexcept;
-
-    void swap(renderer& rhs);
-
-    void operator()();
+    /**
+     * @brief   Draws the objects to the screen
+     */
+    void draw();
 };
 
 

@@ -1,8 +1,6 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
-#include <thread>
 #include <list>
-#include <mutex>
+#include <SFML/Graphics.hpp>
 
 #if defined(__linux__)
 
@@ -12,41 +10,15 @@
 
 #include "renderer.h"
 
-
-
-
-//void renderingFunction(sf::RenderWindow* window)
-//{
-//
-//    // activate the window's context
-//    window->setActive(true);
-//
-//    // the rendering loop
-//    while (window->isOpen())
-//    {
-//        window->clear();
-//        window->draw(rectangle);
-//
-//        // Update the window
-//        window->display();
-//    }
-//}
-int* counter = new int(0);
-
-void eventHandler(sf::Event& event, sf::RenderWindow& window, std::mutex& windowMutex)
+void eventHandler(sf::Event& event, sf::RenderWindow& window)
 {
-    std::lock_guard<std::mutex> lockWindow(windowMutex);
-    for(int i = 0; i < 1000000; i++)
+    // Close window: exit
+    if (event.type == sf::Event::Closed
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
-        *counter = *counter + 1;
+        std::cout << "close event\n";
+        window.close();
     }
-
-//    // Close window: exit
-//    if (event.type == sf::Event::Closed
-//        || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-//    {
-//        window.close();
-//    }
 }
 
 int main()
@@ -67,44 +39,46 @@ int main()
     );
     window.setVerticalSyncEnabled(true); // VSync
     window.setPosition(sf::Vector2i(0, 0));
-    window.setActive(false);
 
+    // Create objects to be drawn
     sf::RectangleShape rectangleShape(sf::Vector2f(50.0f, 50.0f));
     std::list<sf::Drawable*> objects;
     objects.push_back(&rectangleShape);
 
 
-    std::mutex windowMutex;
-
-
-    // Start rendering thread
-    std::cout << "Trying to start rendering thread\n";
-    std::thread renderingThread(renderer(& window, objects, counter, &windowMutex));
-
-
-    // Event and logic loop
+    // Graphics and event loop
+    renderer gameRenderer(&window, objects);
     sf::Event event;
-//    while (window.isOpen())
+    while (window.isOpen())
     {
-//        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){}
-
-//        rectangleShape.move(1, 1);
-
-        // Check all the window's events that were triggered since the last iteration of the loop
-//        while (window.pollEvent(event))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            eventHandler(event, window, windowMutex);
-//            // Close window: exit
-//            if (event.type == sf::Event::Closed
-//                || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-//            {
-//                window.close();
-//            }
+            rectangleShape.move(0, 1);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        {
+            rectangleShape.move(0, -1);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            rectangleShape.move(-1, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        {
+            rectangleShape.move(1, 0);
         }
 
-    }
-    renderingThread.join();
 
-    std::cout << "ExitingExiting " << *counter << "\n";
+        // EVENT HANDLING
+        while (window.pollEvent(event))
+        {
+            eventHandler(event, window);
+        }
+
+
+        // GAME RENDERING
+        gameRenderer.draw();
+    }
+
     return EXIT_SUCCESS;
 }
