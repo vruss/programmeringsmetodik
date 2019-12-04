@@ -1,15 +1,11 @@
 #include <iostream>
 #include <list>
 #include <SFML/Graphics.hpp>
-
-#if defined(__linux__)
-
-#include "X11/Xlib.h"
-
-#endif
+#include <cmath>
 
 #include "renderer.h"
 #include "snake.h"
+#include "utility.h"
 
 void eventHandler(sf::Event& event, sf::RenderWindow& window)
 {
@@ -24,10 +20,10 @@ void eventHandler(sf::Event& event, sf::RenderWindow& window)
 
 int main()
 {
-    // Required for multi-threaded linux Xlib compilation
-#if defined(__linux__)
-    XInitThreads();
-#endif
+    //
+    // Game wide settings
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
 
     // Get list of preferred resolutions and BPP, ordered best first
     auto videoModes = sf::VideoMode::getFullscreenModes();
@@ -36,53 +32,51 @@ int main()
     sf::RenderWindow window(
             videoModes[9],
             "SFML window",
-            sf::Style::Close | sf::Style::Titlebar
+            sf::Style::Close | sf::Style::Titlebar,
+            settings
     );
     window.setVerticalSyncEnabled(true); // VSync
     window.setPosition(sf::Vector2i(0, 0));
 
-    // Create objects to be drawn
-    snake snake1(sf::Vector2f(50, 50), sf::Vector2f(50, 50));
-    std::list<sf::Drawable*> objects;
-    objects.push_back(&snake1);
+    sf::Font font;
+    if (!font.loadFromFile("resources/dejavu/DejaVuSans.ttf"))
+        return EXIT_FAILURE;
 
+    //
+    // Create drawableObjects
+    snake snake(sf::Vector2f(100, 100), sf::Vector2f(50, 4));
+    snake.setOrigin(25, 2);
+
+    sf::Text snakeCoordinatesText(snake.getStringPosition(), font, 12);
+    sf::Text snakeRotationText(snake.getStringRotation(), font, 12);
+    snakeRotationText.setPosition(0, 20);
+
+    //
+    // Push drawable objects to rendering pool
+    std::list<sf::Drawable*> drawableObjects;
+    drawableObjects.push_back(&snake);
+    drawableObjects.push_back(&snakeCoordinatesText);
+    drawableObjects.push_back(&snakeRotationText);
+
+    //
     // Graphics and event loop
-    renderer gameRenderer(&window, objects);
+    renderer gameRenderer(&window, drawableObjects);
     sf::Event event;
-    int slower = 0;
     while (window.isOpen())
     {
-//        if(slower++ % 100000000) {
-//            continue;
-//        }
-
-//TODO: CHANGE LOGIC TO ALLOW FREE SNAKE MOVEMENT
-        auto snakeDirection = snake1.getCurrentDirection();
-        snake1.move(snakeDirection);
-//        snake1.setPosition(snake1.getPosition() + sf::Vector2f(10, 0));
-
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-//            && snakeDirection != direction::up)
-        {
-//            snake1.setCurrentDirection(direction::down);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-//            && snakeDirection != direction::down)
-        {
-            snake1.setCurrentDirection(direction::up);
-        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-//            && snakeDirection != direction::right)
         {
-//            snake1.setCurrentDirection(direction::left);
+            snake.rotate(-T_RATE);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-//            && snakeDirection != direction::left)
         {
-//            snake1.setCurrentDirection(direction::right);
+            snake.rotate(T_RATE);
         }
-
+        sf::Vector2f direction;
+        float rotation = utility::degToRad(snake.getRotation());
+        direction.x = std::cos(rotation) * M_SPEED;
+        direction.y = std::sin(rotation) * M_SPEED;
+        snake.move(direction);
 
         // EVENT HANDLING
         while (window.pollEvent(event))
@@ -90,6 +84,9 @@ int main()
             eventHandler(event, window);
         }
 
+        // Update debug text
+        snakeCoordinatesText.setString(snake.getStringPosition());
+        snakeRotationText.setString(snake.getStringRotation());
 
         // GAME RENDERING
         gameRenderer.draw();

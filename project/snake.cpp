@@ -10,7 +10,7 @@ snake::snake(const sf::Vector2f& position, const sf::Vector2f& size)
     setPosition(position);
 }
 
-sf::Vector2f snake::getCurrentDirection() const
+direction snake::getCurrentDirection() const
 {
     return currentDirection;
 }
@@ -32,4 +32,17 @@ void snake::setCurrentDirection(direction newDirection)
 //            currentDirection = sf::Vector2f(-1, 0);
 //            break;
 //    }
+}
+
+std::string snake::getStringPosition() const
+{
+    std::string xPos = std::to_string(sf::Transformable::getPosition().x);
+    std::string yPos = std::to_string(sf::Transformable::getPosition().y);
+    return "x: " + xPos + " y: " + yPos;
+}
+
+std::string snake::getStringRotation() const
+{
+    std::string rotation = std::to_string(sf::Transformable::getRotation());
+    return "r: " + rotation;
 }
