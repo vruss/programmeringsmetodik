@@ -47,7 +47,7 @@ int main()
 
     sf::Text snakeCoordinatesText(snake.getStringPosition(), font, 16);
     sf::Text snakeRotationText(snake.getStringRotation(), font, 16);
-    snakeRotationText.setPosition(0, 20);
+    snakeRotationText.setPosition(0, 40);
 
     //
     // Push drawable objects to rendering pool

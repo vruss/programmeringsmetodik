@@ -9,7 +9,7 @@
 #ifndef PROJECT_SNAKE_H
 #define PROJECT_SNAKE_H
 
-#include <list>
+#include <vector>
 #include <SFML/System.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
@@ -19,12 +19,14 @@
 /**
  * @brief   Class that represents a snake
  */
-class snake : public sf::RectangleShape
+class snake : public sf::Shape
 {
 private:
-    std::list<sf::RectangleShape> tail;
+    std::vector<sf::RectangleShape> tail;
 
 public:
+
+    snake() = delete;
 
     /**
      * @brief   Constructs a snake object with a position and size
@@ -32,7 +34,7 @@ public:
      * @param position  starting position
      * @param size      snake size
      */
-    explicit snake(const sf::Vector2f& position, const sf::Vector2f& size);
+    snake(const sf::Vector2f& position, const sf::Vector2f& size);
 
     /**
      * @brief   Moves the snake forward
@@ -44,6 +46,10 @@ public:
     void moveForward(float speedAmplifier);
 
     void grow();
+
+    size_t getPointCount() const override;
+
+    sf::Vector2f getPoint(std::size_t index) const override;
 
     /**
      * @brief   Returns position formatted as a string
