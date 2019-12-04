@@ -1,5 +1,9 @@
 //
-// Created by viro on 2019-12-03.
+// Created by Viktor Rosvall (viro1702) on 2019-12-03.
+// Student at Mid Sweden University.
+//
+// Course name: DT047G Programming Methodology
+// File name: renderer.h
 //
 
 #ifndef PROJECT_RENDERER_H

@@ -1,11 +1,9 @@
 #include <iostream>
 #include <list>
 #include <SFML/Graphics.hpp>
-#include <cmath>
 
 #include "renderer.h"
 #include "snake.h"
-#include "utility.h"
 
 void eventHandler(sf::Event& event, sf::RenderWindow& window)
 {
@@ -31,7 +29,7 @@ int main()
     // Create a window with resolution slightly lower than full
     sf::RenderWindow window(
             videoModes[9],
-            "SFML window",
+            "SFML Snake",
             sf::Style::Close | sf::Style::Titlebar,
             settings
     );
@@ -39,16 +37,16 @@ int main()
     window.setPosition(sf::Vector2i(0, 0));
 
     sf::Font font;
-    if (!font.loadFromFile("resources/dejavu/DejaVuSans.ttf"))
+    if (!font.loadFromFile("resources/dejavu/DejaVuSansMono.ttf"))
         return EXIT_FAILURE;
 
     //
     // Create drawableObjects
-    snake snake(sf::Vector2f(100, 100), sf::Vector2f(50, 4));
-    snake.setOrigin(25, 2);
+    snake snake(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
+    snake.setOrigin(25, 25);
 
-    sf::Text snakeCoordinatesText(snake.getStringPosition(), font, 12);
-    sf::Text snakeRotationText(snake.getStringRotation(), font, 12);
+    sf::Text snakeCoordinatesText(snake.getStringPosition(), font, 16);
+    sf::Text snakeRotationText(snake.getStringRotation(), font, 16);
     snakeRotationText.setPosition(0, 20);
 
     //
@@ -57,6 +55,9 @@ int main()
     drawableObjects.push_back(&snake);
     drawableObjects.push_back(&snakeCoordinatesText);
     drawableObjects.push_back(&snakeRotationText);
+
+    snake.grow();
+
 
     //
     // Graphics and event loop
@@ -72,11 +73,7 @@ int main()
         {
             snake.rotate(T_RATE);
         }
-        sf::Vector2f direction;
-        float rotation = utility::degToRad(snake.getRotation());
-        direction.x = std::cos(rotation) * M_SPEED;
-        direction.y = std::sin(rotation) * M_SPEED;
-        snake.move(direction);
+        snake.moveForward(M_SPEED);
 
         // EVENT HANDLING
         while (window.pollEvent(event))
