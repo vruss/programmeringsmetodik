@@ -8,6 +8,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <SFML/Graphics/RenderStates.hpp>
+
 #include "snake.h"
 #include "utility.h"
 
@@ -18,7 +20,6 @@ snake::snake(const sf::Vector2f& position, const sf::Vector2f& size)
     rect.setPosition(position);
     rect.setFillColor(sf::Color::Red);
     tail.push_back(rect);
-    update();
 }
 
 std::string snake::getStringPosition() const
@@ -57,7 +58,6 @@ void snake::moveForward(float speedAmplifier)
     {
         e.move(direction);
     }
-    update();
 }
 
 void snake::grow()
@@ -67,26 +67,13 @@ void snake::grow()
 //    newTail.setPosition(getPosition() - sf::Vector2f(55, 55));
     newTail.setFillColor(sf::Color::Green);
     tail.push_back(newTail);
-    update();
 }
 
-size_t snake::getPointCount() const
+void snake::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    int points = 0;
     for (const auto& e : tail)
     {
-        points += e.getPointCount();
+        target.draw(e, states);
     }
-    std::cout << "points: " << points << "\n";
-    return points;
 }
 
-sf::Vector2f snake::getPoint(std::size_t index) const
-{
-    size_t tailIndex = index / 4;
-    size_t pointIndex = index % 4;
-
-    std::cout << "tailIndex: " << tailIndex << "\n";
-    std::cout << "pointIndex: " << pointIndex << "\n";
-    return tail.at(tailIndex).getPoint(pointIndex);
-}

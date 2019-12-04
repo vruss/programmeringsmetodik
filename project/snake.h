@@ -19,14 +19,14 @@
 /**
  * @brief   Class that represents a snake
  */
-class snake : public sf::Shape
+class snake : public sf::Drawable, public sf::Transformable
 {
 private:
     std::vector<sf::RectangleShape> tail;
 
-public:
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override ;
 
-    snake() = delete;
+public:
 
     /**
      * @brief   Constructs a snake object with a position and size
@@ -47,9 +47,7 @@ public:
 
     void grow();
 
-    size_t getPointCount() const override;
 
-    sf::Vector2f getPoint(std::size_t index) const override;
 
     /**
      * @brief   Returns position formatted as a string
