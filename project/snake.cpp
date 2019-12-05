@@ -8,7 +8,7 @@
 
 #include <cmath>
 #include <iostream>
-#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 #include "snake.h"
 #include "utility.h"
@@ -18,6 +18,7 @@ snake::snake(const sf::Vector2f& position, const sf::Vector2f& size)
 {
     sf::RectangleShape rect(size);
     rect.setPosition(position);
+    rect.setOrigin(size.x / 2, size.y / 2);
     rect.setFillColor(sf::Color::Red);
     tail.push_back(rect);
 }
@@ -47,6 +48,7 @@ std::string snake::getStringRotation() const
     return "r: " + rotation;
 }
 
+//TODO: Make snake rotate entire body
 void snake::moveForward(float speedAmplifier)
 {
     sf::Vector2f direction;
@@ -64,7 +66,7 @@ void snake::grow()
 {
     sf::RectangleShape newTail(sf::Vector2f(50, 50));
     newTail.setOrigin(25, 25);
-//    newTail.setPosition(getPosition() - sf::Vector2f(55, 55));
+    newTail.setPosition(tail.back().getPosition() - sf::Vector2f(55, 0));
     newTail.setFillColor(sf::Color::Green);
     tail.push_back(newTail);
 }
