@@ -47,7 +47,7 @@ public:
 
     void grow();
 
-
+    void rotateRight(float angle);
 
     /**
      * @brief   Returns position formatted as a string

@@ -57,6 +57,7 @@ int main()
     drawableObjects.push_back(&snakeRotationText);
 
     snake.grow();
+    snake.grow();
 
 
     //
@@ -67,11 +68,11 @@ int main()
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            snake.rotate(-T_RATE);
+            snake.rotateRight(-T_RATE);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            snake.rotate(T_RATE);
+            snake.rotateRight(T_RATE);
         }
         snake.moveForward(M_SPEED);
 
