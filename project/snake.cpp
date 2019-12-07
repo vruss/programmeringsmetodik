@@ -31,11 +31,7 @@ snake::snake(const sf::Vector2f& position, const sf::Vector2f& size)
 void
 snake::moveTailPiece(std::vector<sf::RectangleShape>::iterator tailPiece, const sf::Vector2f& prevPos)
 {
-    sf::Vector2f direction;
-    sf::Vector2f targetVector = prevPos - tailPiece->getPosition();
-    float angleToTarget = atan2f(targetVector.y, targetVector.x);
-    direction.x = std::cos(angleToTarget);
-    direction.y = std::sin(angleToTarget);
+    float angleToTarget = calculateAngleToTarget(tailPiece->getPosition(), prevPos);
 
     // Save this tailpiece position for next tailpiece
     sf::Vector2f thisPrevPos = tailPiece->getPosition();
@@ -59,12 +55,12 @@ snake::moveTailPiece(std::vector<sf::RectangleShape>::iterator tailPiece, const 
 
 void snake::moveForward(float speedAmplifier)
 {
-    // Move snake head forward
+    sf::Vector2f direction = CalculateDirectionForHead(speedAmplifier);
+
+    // Save previous head location
     sf::Vector2f prevHeadPos = tail.front().getPosition();
-    sf::Vector2f direction;
-    float rotation = utility::degToRad(tail.front().getRotation());
-    direction.x = std::cos(rotation) * speedAmplifier;
-    direction.y = std::sin(rotation) * speedAmplifier;
+
+    // Move snake head forward
     tail.front().move(direction);
 
     // Move snake body
@@ -84,6 +80,24 @@ void snake::grow()
         tail.push_back(newTail);
     }
 }
+
+sf::Vector2f snake::CalculateDirectionForHead(float speedAmplifier)
+{
+    sf::Vector2f direction;
+    float rotation = utility::degToRad(tail.front().getRotation());
+    direction.x = std::cos(rotation) * speedAmplifier;
+    direction.y = std::sin(rotation) * speedAmplifier;
+    return direction;
+}
+
+float snake::calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Vector2f& target)
+{
+    sf::Vector2f targetVector = target - currentPos;
+    float angleToTarget = atan2f(targetVector.y, targetVector.x);
+    return angleToTarget;
+}
+
+
 
 void snake::rotateRight(float angle)
 {
@@ -110,10 +124,10 @@ std::string snake::getDebugInformation() const
         std::string xPos = std::to_string(e.getPosition().x);
         std::string yPos = std::to_string(e.getPosition().y);
         std::string rotation = std::to_string(e.getRotation());
-        std::cout << rotation << "\n";
-
         text.append("x: " + xPos + " y: " + yPos + " r: " + rotation + "\n");
     }
     return text;
 }
+
+
 

@@ -13,12 +13,15 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+// Default values for the snake
 #define T_RATE 1.5
 #define M_SPEED 2
 #define GROW_AMOUNT 16
 
 /**
  * @brief   Class that represents a snake
+ *
+ * @def     defines default values for turn rate (T_RATE), movement speed (M_SPEED) and grow amount (GROW_AMOUNT)
  */
 class snake : public sf::Drawable, public sf::Transformable
 {
@@ -30,12 +33,14 @@ private:
 
     void moveTailPiece(std::vector<sf::RectangleShape>::iterator tailPiece, const sf::Vector2f& prevPos);
 
-    sf::Vector2f getRotationForTailPiece();
+    sf::Vector2f CalculateDirectionForHead(float speedAmplifier);
+
+    float calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Vector2f& target);
 
 public:
 
     /**
-     * @brief   Constructs a snake object with a position and size
+     * @brief   Constructs a snake object with a starting position and size
      *
      * @param position  starting position
      * @param size      snake size
@@ -45,22 +50,33 @@ public:
     /**
      * @brief   Moves the snake forward
      *
-     * Calculates the forward vector relative to it's rotation
+     * Calculates a forward vector relative to it's rotation.
+     * All tailpieces will move to the previous tailpiece location.
      *
      * @param speedAmplifier    Speed will be multiplied by this
      */
     void moveForward(float speedAmplifier);
 
+    /**
+     * @brief   Grows the snake by a fixed amount
+     */
     void grow();
 
+    /**
+     * @brief   Rotates the snake right
+     *
+     * The snake will rotate left if the angle parameter is negative.
+     *
+     * @param angle
+     */
     void rotateRight(float angle);
 
     /**
-     * @brief   Returns position formatted as a string
+     * @brief   Returns debugging information about the snake
      *
-     * The position string is formatted as "r: " + position
+     * Each line represents a snake piece.
      *
-     * @return  position formatted as a string
+     * @return  formatted string containing x, y positions and it's rotation in degrees.
      */
     std::string getDebugInformation() const;
 };
