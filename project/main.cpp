@@ -1,15 +1,10 @@
 #include <iostream>
-#include <list>
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 #include "renderer.h"
 #include "snake.h"
 
-void eventHandler(sf::Event& event, sf::RenderWindow& window)
-{
-
-
-}
 
 int main()
 {
