@@ -8,7 +8,7 @@
 
 #include "renderer.h"
 
-renderer::renderer(sf::RenderWindow* window, const std::list<sf::Drawable*>& objects)
+renderer::renderer(sf::RenderWindow* window, const std::vector<sf::Drawable*>& objects)
         : objects(objects), window(window)
 {
 }

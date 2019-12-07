@@ -7,13 +7,8 @@
 
 void eventHandler(sf::Event& event, sf::RenderWindow& window)
 {
-    // Close window: exit
-    if (event.type == sf::Event::Closed
-        || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-    {
-        std::cout << "close event\n";
-        window.close();
-    }
+
+
 }
 
 int main()
@@ -45,19 +40,13 @@ int main()
     snake snake(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
     snake.setOrigin(25, 25);
 
-    sf::Text snakeCoordinatesText(snake.getStringPosition(), font, 16);
-    sf::Text snakeRotationText(snake.getStringRotation(), font, 16);
-    snakeRotationText.setPosition(0, 40);
+    sf::Text snakeDebugText(snake.getDebugInformation(), font, 16);
 
     //
     // Push drawable objects to rendering pool
-    std::list<sf::Drawable*> drawableObjects;
+    std::vector<sf::Drawable*> drawableObjects;
     drawableObjects.push_back(&snake);
-    drawableObjects.push_back(&snakeCoordinatesText);
-    drawableObjects.push_back(&snakeRotationText);
-
-    snake.grow();
-    snake.grow();
+    drawableObjects.push_back(&snakeDebugText);
 
 
     //
@@ -76,15 +65,29 @@ int main()
         }
         snake.moveForward(M_SPEED);
 
+
         // EVENT HANDLING
         while (window.pollEvent(event))
         {
-            eventHandler(event, window);
+            if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code == sf::Keyboard::G)
+                {
+                    snake.grow();
+                }
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    window.close();
+                }
+            }
+            else if (event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
         }
 
         // Update debug text
-        snakeCoordinatesText.setString(snake.getStringPosition());
-        snakeRotationText.setString(snake.getStringRotation());
+        snakeDebugText.setString(snake.getDebugInformation());
 
         // GAME RENDERING
         gameRenderer.draw();

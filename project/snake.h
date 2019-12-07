@@ -14,7 +14,8 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #define T_RATE 1.5
-#define M_SPEED 1.5
+#define M_SPEED 2
+#define GROW_AMOUNT 16
 
 /**
  * @brief   Class that represents a snake
@@ -23,8 +24,13 @@ class snake : public sf::Drawable, public sf::Transformable
 {
 private:
     std::vector<sf::RectangleShape> tail;
+    const sf::Vector2f& size;
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override ;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    void moveTailPiece(std::vector<sf::RectangleShape>::iterator tailPiece, const sf::Vector2f& prevPos);
+
+    sf::Vector2f getRotationForTailPiece();
 
 public:
 
@@ -56,16 +62,7 @@ public:
      *
      * @return  position formatted as a string
      */
-    std::string getStringPosition() const;
-
-    /**
-     * @brief   Returns rotation formatted as a string
-     *
-     * The rotation string is formatted as "r: " + rotation
-     *
-     * @return  rotation formatted as a string
-     */
-    std::string getStringRotation() const;
+    std::string getDebugInformation() const;
 };
 
 

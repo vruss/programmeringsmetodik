@@ -10,7 +10,7 @@
 #define PROJECT_RENDERER_H
 
 
-#include <list>
+#include <vector>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -22,7 +22,7 @@ class renderer
 {
 private:
     sf::RenderWindow* window;
-    std::list<sf::Drawable*> objects;
+    std::vector<sf::Drawable*> objects;
 
 public:
 
@@ -35,7 +35,7 @@ public:
      * @param window    handle used for drawing
      * @param objects   drawable objects to be drawn
      */
-    explicit renderer(sf::RenderWindow* window, const std::list<sf::Drawable*>& objects);
+    explicit renderer(sf::RenderWindow* window, const std::vector<sf::Drawable*>& objects);
 
     /**
      * @brief   Draws the objects to the screen
