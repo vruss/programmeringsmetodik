@@ -38,10 +38,7 @@ int main()
     //
     // Create drawableObjects
     auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), snakeSize, sf::Keyboard::A, sf::Keyboard::D);
-    snake1->setOrigin(snakeSize.x / 2, snakeSize.y / 2);
-
     auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize, sf::Keyboard::Left, sf::Keyboard::Right);
-    snake2->setOrigin(snakeSize.x / 2, snakeSize.y / 2);
 
     std::vector<std::shared_ptr<snake>> snakes;
     snakes.emplace_back(snake1);

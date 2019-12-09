@@ -17,14 +17,12 @@
 
 snake::snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboard::Key leftKey,
              sf::Keyboard::Key rightKey)
-        : tail(), size(size), leftKey(leftKey), rightKey(rightKey)
+        : tail(), size(size), leftKey(leftKey), rightKey(rightKey), head(size)
 {
     // Make snake head
-    sf::RectangleShape rect(size);
-    rect.setPosition(position);
-    rect.setOrigin(size.x / 2, size.y / 2);
-    rect.setFillColor(sf::Color::Red);
-    tail.push_back(rect);
+    head.setPosition(position);
+    head.setOrigin(size.x / 2, size.y / 2);
+    head.setFillColor(sf::Color::Red);
 
     // Grow snake body
     grow();
@@ -59,16 +57,13 @@ snake::moveTailPiece(std::vector<sf::RectangleShape>::iterator tailPiece, const 
 void snake::moveForward(float speedAmplifier)
 {
     sf::Vector2f direction = CalculateDirectionForHead(speedAmplifier);
-
-    // Save previous head location
-    sf::Vector2f prevHeadPos = tail.front().getPosition();
+    sf::Vector2f prevHeadPos = head.getPosition();
 
     // Move snake head forward
-    tail.front().move(direction);
+    head.move(direction);
 
     // Move snake body
-    auto tailPiece = tail.begin();
-    moveTailPiece(++tailPiece, prevHeadPos);
+    moveTailPiece(tail.begin(), prevHeadPos);
 }
 
 void snake::grow()
@@ -77,8 +72,8 @@ void snake::grow()
     {
         sf::RectangleShape newTail(size);
         newTail.setOrigin(size.x / 2, size.y / 2);
-        newTail.setPosition(tail.back().getPosition());
-        newTail.setRotation(tail.back().getRotation());
+        newTail.setPosition((tail.empty()) ? head.getPosition() : tail.back().getPosition());
+        newTail.setRotation((tail.empty()) ? head.getRotation() : tail.back().getRotation());
         newTail.setFillColor(sf::Color::Cyan);
         tail.push_back(newTail);
     }
@@ -97,7 +92,6 @@ void snake::handleEvents(sf::Event& event)
 
 void snake::handleInput()
 {
-
     if (sf::Keyboard::isKeyPressed(leftKey))
     {
         rotateRight(-T_RATE);
@@ -112,7 +106,6 @@ void snake::handleInput()
 bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
 {
     bool hasCollided = false;
-    auto head = tail.front();
     for (const auto& _snake: snakes)
     {
         // Skip if snake in list is this
@@ -122,13 +115,13 @@ bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
         }
 
         // Look for a collision between this snake head and other snake body parts
-        for (auto otherTail = _snake->getTail().begin() + 1; otherTail != _snake->getTail().end(); otherTail++)
+        for (auto& otherTail : _snake->getTail())
         {
             //TODO: Bounding box isn't rotating!
             //TODO: Check Separating Axis Theorem
 
 //            if (head.intersects(snake::boundingRect(*otherTail)))
-            if (!collision::BoundingBoxTest(head, *otherTail))
+            if (collision::BoundingBoxTest(head, otherTail))
             {
                 hasCollided = true;
                 std::cout << "You have collided!\n";
@@ -171,7 +164,7 @@ sf::FloatRect snake::boundingRect(const sf::Shape& shape)
 sf::Vector2f snake::CalculateDirectionForHead(float speedAmplifier)
 {
     sf::Vector2f direction;
-    float rotation = utility::degToRad(tail.front().getRotation());
+    float rotation = utility::degToRad(head.getRotation());
     direction.x = std::cos(rotation) * speedAmplifier;
     direction.y = std::sin(rotation) * speedAmplifier;
     return direction;
@@ -187,14 +180,17 @@ float snake::calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Ve
 
 void snake::rotateRight(float angle)
 {
-    tail.front().rotate(angle);
+    head.rotate(angle);
 }
 
 void snake::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    for (const auto& e : tail)
+    // Draws head. Will be drawn under tail if places before tail draw
+    target.draw(head, states);
+
+    for (const auto& tailPiece : tail)
     {
-        target.draw(e, states);
+        target.draw(tailPiece, states);
     }
 }
 

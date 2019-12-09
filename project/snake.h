@@ -25,6 +25,7 @@
 class snake : public sf::Drawable, public sf::Transformable
 {
 private:
+    sf::RectangleShape head;
     std::vector<sf::RectangleShape> tail;
     const sf::Vector2f& size;
     sf::Keyboard::Key leftKey;
