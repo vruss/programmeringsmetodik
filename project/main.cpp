@@ -12,13 +12,15 @@ int main()
     // Game wide settings
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
+    int videoModeSize = 8;
 
     // Get list of preferred resolutions and BPP, ordered best first
     auto videoModes = sf::VideoMode::getFullscreenModes();
+    auto videoMode = videoModes[videoModeSize];
 
     // Create a window with resolution slightly lower than full
     sf::RenderWindow window(
-            videoModes[9],
+            videoMode,
             "SFML Snake",
             sf::Style::Close | sf::Style::Titlebar,
             settings
@@ -30,19 +32,25 @@ int main()
     if (!font.loadFromFile("resources/dejavu/DejaVuSansMono.ttf"))
         return EXIT_FAILURE;
 
+
+    float snakeScale = 24;
+    sf::Vector2f snakeSize(videoMode.height / snakeScale, videoMode.height / snakeScale);
     //
     // Create drawableObjects
-    auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
-    snake1->setOrigin(25, 25);
+    auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), snakeSize, sf::Keyboard::A, sf::Keyboard::D);
+    snake1->setOrigin(snakeSize.x / 2, snakeSize.y / 2);
 
-    auto snakeDebugText = std::make_shared<sf::Text>(snake1->getDebugInformation(), font, 16);
+    auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize, sf::Keyboard::Left, sf::Keyboard::Right);
+    snake2->setOrigin(snakeSize.x / 2, snakeSize.y / 2);
 
+    std::vector<std::shared_ptr<snake>> snakes;
+    snakes.emplace_back(snake1);
+    snakes.emplace_back(snake2);
 
     //
     // Push drawable objects to rendering pool
     std::vector<std::shared_ptr<sf::Drawable>> drawableObjects;
-    drawableObjects.emplace_back(snake1);
-    drawableObjects.emplace_back(snakeDebugText);
+    drawableObjects.insert(drawableObjects.begin(), snakes.begin(), snakes.end());
 
 
     //
@@ -51,8 +59,12 @@ int main()
     sf::Event event;
     while (window.isOpen())
     {
-        snake1->handleInput(sf::Keyboard::A, sf::Keyboard::D);
-        snake1->moveForward(M_SPEED);
+        for (const auto& snake: snakes)
+        {
+            snake->isColliding(snakes);
+            snake->handleInput();
+            snake->moveForward(M_SPEED);
+        }
 
         // EVENT HANDLING
         while (window.pollEvent(event))
@@ -71,9 +83,6 @@ int main()
                 window.close();
             }
         }
-
-        // Update debug text
-        snakeDebugText->setString(snake1->getDebugInformation());
 
         // GAME RENDERING
         gameRenderer.draw();

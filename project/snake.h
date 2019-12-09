@@ -27,6 +27,8 @@ class snake : public sf::Drawable, public sf::Transformable
 private:
     std::vector<sf::RectangleShape> tail;
     const sf::Vector2f& size;
+    sf::Keyboard::Key leftKey;
+    sf::Keyboard::Key rightKey;
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -46,7 +48,8 @@ public:
      * @param position  starting position
      * @param size      snake size
      */
-    snake(const sf::Vector2f& position, const sf::Vector2f& size);
+    snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboard::Key leftKey,
+          sf::Keyboard::Key rightKey);
 
     /**
      * @brief   Moves the snake forward
@@ -76,7 +79,9 @@ public:
      * @param leftKey   key pressed for left turn
      * @param rightKey  key pressed for right turn
      */
-    void handleInput(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey);
+    void handleInput();
+
+    bool isColliding(std::vector<std::shared_ptr<snake>>& snakes);
 
     /**
      * @brief   Returns debugging information about the snake
@@ -86,6 +91,10 @@ public:
      * @return  formatted string containing x, y positions and it's rotation in degrees.
      */
     std::string getDebugInformation() const;
+
+    const std::vector<sf::RectangleShape>& getTail() const;
+
+    static sf::FloatRect boundingRect(const sf::Shape& shape);
 };
 
 

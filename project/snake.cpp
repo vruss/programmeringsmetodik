@@ -9,12 +9,15 @@
 #include <cmath>
 #include <iostream>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <memory>
 
 #include "snake.h"
 #include "utility.h"
+#include "libs/collision.h"
 
-snake::snake(const sf::Vector2f& position, const sf::Vector2f& size)
-        : tail(), size(size)
+snake::snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboard::Key leftKey,
+             sf::Keyboard::Key rightKey)
+        : tail(), size(size), leftKey(leftKey), rightKey(rightKey)
 {
     // Make snake head
     sf::RectangleShape rect(size);
@@ -76,7 +79,7 @@ void snake::grow()
         newTail.setOrigin(size.x / 2, size.y / 2);
         newTail.setPosition(tail.back().getPosition());
         newTail.setRotation(tail.back().getRotation());
-        newTail.setFillColor(sf::Color::Green);
+        newTail.setFillColor(sf::Color::Cyan);
         tail.push_back(newTail);
     }
 }
@@ -92,8 +95,9 @@ void snake::handleEvents(sf::Event& event)
     }
 }
 
-void snake::handleInput(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey)
+void snake::handleInput()
 {
+
     if (sf::Keyboard::isKeyPressed(leftKey))
     {
         rotateRight(-T_RATE);
@@ -102,6 +106,66 @@ void snake::handleInput(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey)
     {
         rotateRight(T_RATE);
     }
+}
+
+
+bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
+{
+    bool hasCollided = false;
+    auto head = tail.front();
+    for (const auto& _snake: snakes)
+    {
+        // Skip if snake in list is this
+        if (_snake.get() == this)
+        {
+            continue;
+        }
+
+        // Look for a collision between this snake head and other snake body parts
+        for (auto otherTail = _snake->getTail().begin() + 1; otherTail != _snake->getTail().end(); otherTail++)
+        {
+            //TODO: Bounding box isn't rotating!
+            //TODO: Check Separating Axis Theorem
+
+//            if (head.intersects(snake::boundingRect(*otherTail)))
+            if (!collision::BoundingBoxTest(head, *otherTail))
+            {
+                hasCollided = true;
+                std::cout << "You have collided!\n";
+                break; // TODO: punish this snake
+            }
+        }
+    }
+    return hasCollided;
+}
+
+// Alternate implementation: minimal bounding rect
+sf::FloatRect snake::boundingRect(const sf::Shape& shape)
+{
+    // Is this case handled or left as UB?
+    if (shape.getPointCount() == 0)
+        return sf::FloatRect();
+
+    sf::Vector2f min = shape.getTransform().transformPoint(shape.getPoint(0));
+    sf::Vector2f max = min;
+
+    for (std::size_t i = 1; i < shape.getPointCount(); ++i)
+    {
+        sf::Vector2f point = shape.getTransform().transformPoint(shape.getPoint(i));
+
+        min.x = std::min(min.x, point.x);
+        min.y = std::min(min.y, point.y);
+        max.x = std::max(max.x, point.x);
+        max.y = std::max(max.y, point.y);
+    }
+
+    // take into account outline
+    min.x -= shape.getOutlineThickness();
+    min.y -= shape.getOutlineThickness();
+    max.x += shape.getOutlineThickness();
+    max.y += shape.getOutlineThickness();
+
+    return sf::FloatRect(min, max - min);
 }
 
 sf::Vector2f snake::CalculateDirectionForHead(float speedAmplifier)
@@ -150,6 +214,12 @@ std::string snake::getDebugInformation() const
     }
     return text;
 }
+
+const std::vector<sf::RectangleShape>& snake::getTail() const
+{
+    return tail;
+}
+
 
 
 

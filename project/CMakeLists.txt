@@ -7,5 +7,5 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lpthread -lX11")
 set(SFML_DIR "libs/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML COMPONENTS graphics system REQUIRED)
-add_executable(project main.cpp renderer.cpp renderer.h snake.cpp snake.h utility.cpp utility.h)
+add_executable(project main.cpp renderer.cpp renderer.h snake.cpp snake.h utility.cpp utility.h libs/collision.cpp libs/collision.h)
 target_link_libraries(project sfml-graphics sfml-system)
