@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -33,15 +32,16 @@ int main()
 
     //
     // Create drawableObjects
-    auto snakeObj = std::make_shared<snake>(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
-    snakeObj->setOrigin(25, 25);
+    auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
+    snake1->setOrigin(25, 25);
 
-    auto snakeDebugText = std::make_shared<sf::Text>(snakeObj->getDebugInformation(), font, 16);
+    auto snakeDebugText = std::make_shared<sf::Text>(snake1->getDebugInformation(), font, 16);
+
 
     //
     // Push drawable objects to rendering pool
     std::vector<std::shared_ptr<sf::Drawable>> drawableObjects;
-    drawableObjects.emplace_back(snakeObj);
+    drawableObjects.emplace_back(snake1);
     drawableObjects.emplace_back(snakeDebugText);
 
 
@@ -51,26 +51,16 @@ int main()
     sf::Event event;
     while (window.isOpen())
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            snakeObj->rotateRight(-T_RATE);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            snakeObj->rotateRight(T_RATE);
-        }
-        snakeObj->moveForward(M_SPEED);
-
+        snake1->handleInput(sf::Keyboard::A, sf::Keyboard::D);
+        snake1->moveForward(M_SPEED);
 
         // EVENT HANDLING
         while (window.pollEvent(event))
         {
+            snake1->handleEvents(event);
+
             if (event.type == sf::Event::KeyReleased)
             {
-                if (event.key.code == sf::Keyboard::G)
-                {
-                    snakeObj->grow();
-                }
                 if (event.key.code == sf::Keyboard::Escape)
                 {
                     window.close();
@@ -83,7 +73,7 @@ int main()
         }
 
         // Update debug text
-        snakeDebugText->setString(snakeObj->getDebugInformation());
+        snakeDebugText->setString(snake1->getDebugInformation());
 
         // GAME RENDERING
         gameRenderer.draw();

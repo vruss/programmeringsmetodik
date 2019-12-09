@@ -81,6 +81,29 @@ void snake::grow()
     }
 }
 
+void snake::handleEvents(sf::Event& event)
+{
+    if (event.type == sf::Event::KeyReleased)
+    {
+        if (event.key.code == sf::Keyboard::G)
+        {
+            grow();
+        }
+    }
+}
+
+void snake::handleInput(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey)
+{
+    if (sf::Keyboard::isKeyPressed(leftKey))
+    {
+        rotateRight(-T_RATE);
+    }
+    if (sf::Keyboard::isKeyPressed(rightKey))
+    {
+        rotateRight(T_RATE);
+    }
+}
+
 sf::Vector2f snake::CalculateDirectionForHead(float speedAmplifier)
 {
     sf::Vector2f direction;
@@ -96,7 +119,6 @@ float snake::calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Ve
     float angleToTarget = atan2f(targetVector.y, targetVector.x);
     return angleToTarget;
 }
-
 
 
 void snake::rotateRight(float angle)
@@ -128,6 +150,10 @@ std::string snake::getDebugInformation() const
     }
     return text;
 }
+
+
+
+
 
 
 

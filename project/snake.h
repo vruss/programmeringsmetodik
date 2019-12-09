@@ -12,6 +12,7 @@
 #include <vector>
 #include <SFML/System.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Window/Event.hpp>
 
 // Default values for the snake
 #define T_RATE 1.5
@@ -20,11 +21,6 @@
 
 /**
  * @brief   Class that represents a snake
- *
- * dsds
- * Hello
- *
- * @def     defines default values for turn rate (T_RATE), movement speed (M_SPEED) and grow amount (GROW_AMOUNT)
  */
 class snake : public sf::Drawable, public sf::Transformable
 {
@@ -38,7 +34,9 @@ private:
 
     sf::Vector2f CalculateDirectionForHead(float speedAmplifier);
 
-    float calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Vector2f& target);
+    void rotateRight(float angle);
+
+    static float calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Vector2f& target);
 
 public:
 
@@ -66,13 +64,19 @@ public:
     void grow();
 
     /**
-     * @brief   Rotates the snake right
+     * @brief   Handles user events
      *
-     * The snake will rotate left if the angle parameter is negative.
-     *
-     * @param angle
+     * @param event     type of event
      */
-    void rotateRight(float angle);
+    void handleEvents(sf::Event& event);
+
+    /**
+     * @brief   Handles user input for turning and boosting
+     *
+     * @param leftKey   key pressed for left turn
+     * @param rightKey  key pressed for right turn
+     */
+    void handleInput(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey);
 
     /**
      * @brief   Returns debugging information about the snake
