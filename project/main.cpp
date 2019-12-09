@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 #include "renderer.h"
 #include "snake.h"
@@ -32,16 +33,16 @@ int main()
 
     //
     // Create drawableObjects
-    snake snake(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
-    snake.setOrigin(25, 25);
+    auto snakeObj = std::make_shared<snake>(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
+    snakeObj->setOrigin(25, 25);
 
-    sf::Text snakeDebugText(snake.getDebugInformation(), font, 16);
+    auto snakeDebugText = std::make_shared<sf::Text>(snakeObj->getDebugInformation(), font, 16);
 
     //
     // Push drawable objects to rendering pool
-    std::vector<sf::Drawable*> drawableObjects;
-    drawableObjects.push_back(&snake);
-    drawableObjects.push_back(&snakeDebugText);
+    std::vector<std::shared_ptr<sf::Drawable>> drawableObjects;
+    drawableObjects.emplace_back(snakeObj);
+    drawableObjects.emplace_back(snakeDebugText);
 
 
     //
@@ -52,13 +53,13 @@ int main()
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            snake.rotateRight(-T_RATE);
+            snakeObj->rotateRight(-T_RATE);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            snake.rotateRight(T_RATE);
+            snakeObj->rotateRight(T_RATE);
         }
-        snake.moveForward(M_SPEED);
+        snakeObj->moveForward(M_SPEED);
 
 
         // EVENT HANDLING
@@ -68,7 +69,7 @@ int main()
             {
                 if (event.key.code == sf::Keyboard::G)
                 {
-                    snake.grow();
+                    snakeObj->grow();
                 }
                 if (event.key.code == sf::Keyboard::Escape)
                 {
@@ -82,7 +83,7 @@ int main()
         }
 
         // Update debug text
-        snakeDebugText.setString(snake.getDebugInformation());
+        snakeDebugText->setString(snakeObj->getDebugInformation());
 
         // GAME RENDERING
         gameRenderer.draw();

@@ -21,6 +21,9 @@
 /**
  * @brief   Class that represents a snake
  *
+ * dsds
+ * Hello
+ *
  * @def     defines default values for turn rate (T_RATE), movement speed (M_SPEED) and grow amount (GROW_AMOUNT)
  */
 class snake : public sf::Drawable, public sf::Transformable

@@ -13,6 +13,7 @@
 #include <vector>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <memory>
 
 
 /**
@@ -22,7 +23,7 @@ class renderer
 {
 private:
     sf::RenderWindow* window;
-    std::vector<sf::Drawable*> objects;
+    std::vector<std::shared_ptr<sf::Drawable>> objects;
 
 public:
 
@@ -35,7 +36,7 @@ public:
      * @param window    handle used for drawing
      * @param objects   drawable objects to be drawn
      */
-    explicit renderer(sf::RenderWindow* window, const std::vector<sf::Drawable*>& objects);
+    explicit renderer(sf::RenderWindow* window, const std::vector<std::shared_ptr<sf::Drawable>>& objects);
 
     /**
      * @brief   Draws the objects to the screen
