@@ -5,6 +5,7 @@
 #include "renderer.h"
 #include "snake.h"
 
+//TODO: https://github.com/SFML/SFML/wiki/Tutorial%3A-Manage-dynamic-key-binding
 
 int main()
 {

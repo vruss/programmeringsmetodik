@@ -13,7 +13,7 @@
 
 #include "snake.h"
 #include "utility.h"
-#include "libs/collision.h"
+#include "libs/rectangularBoundaryCollision.hpp"
 
 snake::snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboard::Key leftKey,
              sf::Keyboard::Key rightKey)
@@ -120,10 +120,12 @@ bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
             //TODO: Bounding box isn't rotating!
             //TODO: Check Separating Axis Theorem
 
+
 //            if (head.intersects(snake::boundingRect(*otherTail)))
-            if (collision::BoundingBoxTest(head, otherTail))
+            if (collision::areColliding(head, otherTail))
             {
                 hasCollided = true;
+                head.setFillColor(sf::Color::Yellow);
                 std::cout << "You have collided!\n";
                 break; // TODO: punish this snake
             }
