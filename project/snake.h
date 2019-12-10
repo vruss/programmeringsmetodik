@@ -82,6 +82,14 @@ public:
      */
     void handleInput();
 
+    /**
+     * @brief   Checks if snake head is colliding with other snakes' tail
+     *
+     * This collision check takes snake rotation into account.
+     *
+     * @param snakes    all snakes this snake can collide with
+     * @return          true if a collision has occurred
+     */
     bool isColliding(std::vector<std::shared_ptr<snake>>& snakes);
 
     /**
@@ -93,9 +101,10 @@ public:
      */
     std::string getDebugInformation() const;
 
+    /**
+     * @return  snake tail
+     */
     const std::vector<sf::RectangleShape>& getTail() const;
-
-    static sf::FloatRect boundingRect(const sf::Shape& shape);
 };
 
 
