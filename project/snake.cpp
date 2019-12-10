@@ -108,7 +108,7 @@ bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
     bool hasCollided = false;
     for (const auto& _snake: snakes)
     {
-        // Skip if snake in list is this
+        // Skip checking collision against self
         if (_snake.get() == this)
         {
             continue;
@@ -117,50 +117,15 @@ bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
         // Look for a collision between this snake head and other snake body parts
         for (auto& otherTail : _snake->getTail())
         {
-            //TODO: Bounding box isn't rotating!
-            //TODO: Check Separating Axis Theorem
-
-
-//            if (head.intersects(snake::boundingRect(*otherTail)))
             if (collision::areColliding(head, otherTail))
             {
                 hasCollided = true;
                 head.setFillColor(sf::Color::Yellow);
-                std::cout << "You have collided!\n";
                 break; // TODO: punish this snake
             }
         }
     }
     return hasCollided;
-}
-
-// Alternate implementation: minimal bounding rect
-sf::FloatRect snake::boundingRect(const sf::Shape& shape)
-{
-    // Is this case handled or left as UB?
-    if (shape.getPointCount() == 0)
-        return sf::FloatRect();
-
-    sf::Vector2f min = shape.getTransform().transformPoint(shape.getPoint(0));
-    sf::Vector2f max = min;
-
-    for (std::size_t i = 1; i < shape.getPointCount(); ++i)
-    {
-        sf::Vector2f point = shape.getTransform().transformPoint(shape.getPoint(i));
-
-        min.x = std::min(min.x, point.x);
-        min.y = std::min(min.y, point.y);
-        max.x = std::max(max.x, point.x);
-        max.y = std::max(max.y, point.y);
-    }
-
-    // take into account outline
-    min.x -= shape.getOutlineThickness();
-    min.y -= shape.getOutlineThickness();
-    max.x += shape.getOutlineThickness();
-    max.y += shape.getOutlineThickness();
-
-    return sf::FloatRect(min, max - min);
 }
 
 sf::Vector2f snake::CalculateDirectionForHead(float speedAmplifier)
