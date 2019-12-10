@@ -154,7 +154,6 @@ void snake::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // Draws head. Will be drawn under tail if places before tail draw
     target.draw(head, states);
-
     for (const auto& tailPiece : tail)
     {
         target.draw(tailPiece, states);

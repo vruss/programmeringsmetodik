@@ -37,8 +37,6 @@ private:
 
     sf::Vector2f CalculateDirectionForHead(float speedAmplifier);
 
-    void rotateRight(float angle);
-
     static float calculateAngleToTarget(const sf::Vector2f& currentPos, const sf::Vector2f& target);
 
 public:
@@ -91,6 +89,15 @@ public:
      * @return          true if a collision has occurred
      */
     bool isColliding(std::vector<std::shared_ptr<snake>>& snakes);
+
+    /**
+     * @brief   Rotates the snake right
+     *
+     * The snake will rotate left if the angle parameter is negative.
+     *
+     * @param angle
+     */
+    void rotateRight(float angle);
 
     /**
      * @brief   Returns debugging information about the snake
