@@ -5,6 +5,7 @@
 #include "renderer.h"
 #include "snake.h"
 #include "utility.h"
+#include "food.h"
 
 //TODO: https://github.com/SFML/SFML/wiki/Tutorial%3A-Manage-dynamic-key-binding
 
@@ -34,17 +35,21 @@ int main()
     if (!font.loadFromFile("resources/dejavu/DejaVuSansMono.ttf"))
         return EXIT_FAILURE;
 
-
-    float snakeScale = 24;
+    float snakeScale = 28;
     sf::Vector2f snakeSize(videoMode.height / snakeScale, videoMode.height / snakeScale);
+    float snakeSpeed = snakeSize.x / snakeScale * 1.5;
+
+    float foodScale = snakeScale * 1.5;
+    sf::Vector2f foodSize(videoMode.height / foodScale, videoMode.height / foodScale);
+    int maxFood = videoMode.height / foodScale ;
+
     //
     // Create drawableObjects
     auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), snakeSize, sf::Keyboard::A, sf::Keyboard::D);
     auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize, sf::Keyboard::Left, sf::Keyboard::Right);
+    std::vector<std::shared_ptr<snake>> snakes({snake1, snake2});
 
-    std::vector<std::shared_ptr<snake>> snakes;
-    snakes.emplace_back(snake1);
-    snakes.emplace_back(snake2);
+    std::vector<std::shared_ptr<food>> foodBowl;
 
     //
     // Push drawable objects to rendering pool
@@ -54,18 +59,34 @@ int main()
 
     //
     // Graphics and event loop
-    renderer gameRenderer(&window, drawableObjects);
     sf::Event event;
     while (window.isOpen())
     {
+        renderer gameRenderer(&window, drawableObjects);
+
+        // Fill screen with food
+        if (foodBowl.size() < maxFood)
+        {
+            auto foodPiece = std::make_shared<food>(foodSize, utility::getRandomPosition(window.getSize()));
+            foodBowl.emplace_back(foodPiece);
+            drawableObjects.emplace_back(foodPiece);
+        }
+
         for (const auto& _snake: snakes)
         {
+            // Check snake collision
             if (_snake->isColliding(snakes))
             {
                 _snake->reset(utility::getRandomPosition(window.getSize()));
             }
+            // Check food collision
+            if (auto foodPiece = _snake->isColliding(foodBowl))
+            {
+                _snake->grow();
+                foodPiece->getFoodShape().setPosition(utility::getRandomPosition(window.getSize()));
+            }
             _snake->handleInput();
-            _snake->moveForward(M_SPEED);
+            _snake->moveForward(snakeSpeed);
         }
 
         // EVENT HANDLING

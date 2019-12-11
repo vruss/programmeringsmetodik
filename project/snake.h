@@ -11,18 +11,19 @@
 
 #include <vector>
 #include <SFML/System.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
+#include "food.h"
 
 // Default values for the snake
-#define T_RATE 1.5
+#define T_RATE 1.75
 #define M_SPEED 2
 #define GROW_AMOUNT 16
 
 /**
  * @brief   Class that represents a snake
  */
-class snake : public sf::Drawable, public sf::Transformable
+class snake : public sf::Drawable
 {
 private:
     sf::RectangleShape head;
@@ -88,7 +89,19 @@ public:
      * @param snakes    all snakes this snake can collide with
      * @return          true if a collision has occurred
      */
-    bool isColliding(std::vector<std::shared_ptr<snake>>& snakes);
+    bool isColliding(const std::vector<std::shared_ptr<snake>>& snakes);
+
+    /**
+     * @brief   Checks if snake head is colliding with food
+     *
+     * This collision check takes snake rotation into account.
+     * Will return a pointer to the collided food piece,
+     * or nullptr if no collision detected.
+     *
+     * @param foodBowl  all food pieces this snake can collide with
+     * @return          the a pointer to the collided food piece
+     */
+    std::shared_ptr<food> isColliding(std::vector<std::shared_ptr<food>>& foodBowl);
 
     /**
      * @brief   Resets the snake with a new position and small size

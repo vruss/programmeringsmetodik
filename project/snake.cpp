@@ -8,7 +8,6 @@
 
 #include <cmath>
 #include <iostream>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <memory>
 
 #include "snake.h"
@@ -103,7 +102,7 @@ void snake::handleInput()
 }
 
 
-bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
+bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
 {
     bool hasCollided = false;
     for (const auto& _snake: snakes)
@@ -120,13 +119,27 @@ bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
             if (collision::areColliding(head, otherTail))
             {
                 hasCollided = true;
-                head.setFillColor(sf::Color::Yellow);
-                break; // TODO: punish this snake
+                break;
             }
         }
     }
     return hasCollided;
 }
+
+std::shared_ptr<food> snake::isColliding(std::vector<std::shared_ptr<food>>& foodBowl)
+{
+    std::shared_ptr<food> hasCollided = nullptr;
+    for (const auto& foodPiece: foodBowl)
+    {
+        if (collision::areColliding(head, foodPiece->getFoodShape()))
+        {
+            hasCollided = foodPiece;
+            break;
+        }
+    }
+    return hasCollided;
+}
+
 
 void snake::reset(const sf::Vector2f& newPosition)
 {
