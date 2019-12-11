@@ -7,6 +7,7 @@
 //
 
 #include <cmath>
+#include <random>
 #include "utility.h"
 
 float utility::degToRad(float degrees)
@@ -17,4 +18,13 @@ float utility::degToRad(float degrees)
 float utility::radToDeg(float radians)
 {
     return radians * (180.0f / M_PI);
+}
+
+sf::Vector2f utility::getRandomPosition(sf::Vector2u bounds)
+{
+    std::random_device rd;
+    std::uniform_real_distribution<float> xDist(0, bounds.x);
+    std::uniform_real_distribution<float> yDist(0, bounds.y);
+
+    return sf::Vector2f(xDist(rd), yDist(rd));
 }

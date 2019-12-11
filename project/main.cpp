@@ -4,6 +4,7 @@
 
 #include "renderer.h"
 #include "snake.h"
+#include "utility.h"
 
 //TODO: https://github.com/SFML/SFML/wiki/Tutorial%3A-Manage-dynamic-key-binding
 
@@ -57,11 +58,14 @@ int main()
     sf::Event event;
     while (window.isOpen())
     {
-        for (const auto& snake: snakes)
+        for (const auto& _snake: snakes)
         {
-            snake->isColliding(snakes);
-            snake->handleInput();
-            snake->moveForward(M_SPEED);
+            if (_snake->isColliding(snakes))
+            {
+                _snake->reset(utility::getRandomPosition(window.getSize()));
+            }
+            _snake->handleInput();
+            _snake->moveForward(M_SPEED);
         }
 
         // EVENT HANDLING

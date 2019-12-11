@@ -75,7 +75,7 @@ void snake::grow()
         newTail.setPosition((tail.empty()) ? head.getPosition() : tail.back().getPosition());
         newTail.setRotation((tail.empty()) ? head.getRotation() : tail.back().getRotation());
         newTail.setFillColor(sf::Color::Cyan);
-        tail.push_back(newTail);
+        tail.emplace_back(newTail);
     }
 }
 
@@ -126,6 +126,16 @@ bool snake::isColliding(std::vector<std::shared_ptr<snake>>& snakes)
         }
     }
     return hasCollided;
+}
+
+void snake::reset(const sf::Vector2f& newPosition)
+{
+    // Move head to random position
+    head.setPosition(newPosition);
+
+    // Reset tail length
+    tail.erase(tail.begin(), tail.end());
+    grow();
 }
 
 sf::Vector2f snake::CalculateDirectionForHead(float speedAmplifier)
@@ -181,6 +191,7 @@ const std::vector<sf::RectangleShape>& snake::getTail() const
 {
     return tail;
 }
+
 
 
 

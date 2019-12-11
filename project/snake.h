@@ -91,6 +91,13 @@ public:
     bool isColliding(std::vector<std::shared_ptr<snake>>& snakes);
 
     /**
+     * @brief   Resets the snake with a new position and small size
+     *
+     * @param newPosition   the new spawn position
+     */
+    void reset(const sf::Vector2f& newPosition);
+
+    /**
      * @brief   Rotates the snake right
      *
      * The snake will rotate left if the angle parameter is negative.
