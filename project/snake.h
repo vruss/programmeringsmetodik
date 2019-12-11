@@ -29,8 +29,9 @@ private:
     sf::RectangleShape head;
     std::vector<sf::RectangleShape> tail;
     const sf::Vector2f& size;
-    sf::Keyboard::Key leftKey;
-    sf::Keyboard::Key rightKey;
+    const sf::Color color;
+    const sf::Keyboard::Key leftKey;
+    const sf::Keyboard::Key rightKey;
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -43,13 +44,19 @@ private:
 public:
 
     /**
-     * @brief   Constructs a snake object with a starting position and size
+     * @brief   Constructs a snake object with starting parameters
+     *
+     * Constructs a snake with keyboard shortcuts associated.
+     * It also has a size and color.
      *
      * @param position  starting position
      * @param size      snake size
+     * @param leftKey   keyboard shortcut for left turn
+     * @param rightKey  keyboard shortcut for right turn
+     * @param color     snake color
      */
     snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboard::Key leftKey,
-          sf::Keyboard::Key rightKey);
+          sf::Keyboard::Key rightKey, const sf::Color& color);
 
     /**
      * @brief   Moves the snake forward
@@ -75,9 +82,6 @@ public:
 
     /**
      * @brief   Handles user input for turning and boosting
-     *
-     * @param leftKey   key pressed for left turn
-     * @param rightKey  key pressed for right turn
      */
     void handleInput();
 

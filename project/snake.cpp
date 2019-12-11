@@ -15,8 +15,8 @@
 #include "libs/rectangularBoundaryCollision.hpp"
 
 snake::snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboard::Key leftKey,
-             sf::Keyboard::Key rightKey)
-        : tail(), size(size), leftKey(leftKey), rightKey(rightKey), head(size)
+             sf::Keyboard::Key rightKey, const sf::Color& color)
+        : tail(), size(size), leftKey(leftKey), rightKey(rightKey), head(size), color(color)
 {
     // Make snake head
     head.setPosition(position);
@@ -73,7 +73,7 @@ void snake::grow()
         newTail.setOrigin(size.x / 2, size.y / 2);
         newTail.setPosition((tail.empty()) ? head.getPosition() : tail.back().getPosition());
         newTail.setRotation((tail.empty()) ? head.getRotation() : tail.back().getRotation());
-        newTail.setFillColor(sf::Color::Cyan);
+        newTail.setFillColor(color);
         tail.emplace_back(newTail);
     }
 }

@@ -41,12 +41,16 @@ int main()
 
     float foodScale = snakeScale * 1.5;
     sf::Vector2f foodSize(videoMode.height / foodScale, videoMode.height / foodScale);
-    int maxFood = videoMode.height / foodScale ;
+    int maxFood = videoMode.height / foodScale;
 
     //
     // Create drawableObjects
-    auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), snakeSize, sf::Keyboard::A, sf::Keyboard::D);
-    auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize, sf::Keyboard::Left, sf::Keyboard::Right);
+    auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), snakeSize,
+                                          sf::Keyboard::A, sf::Keyboard::D,
+                                          sf::Color::Cyan);
+    auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize,
+                                          sf::Keyboard::Left, sf::Keyboard::Right,
+                                          sf::Color::Green);
     std::vector<std::shared_ptr<snake>> snakes({snake1, snake2});
 
     std::vector<std::shared_ptr<food>> foodBowl;
