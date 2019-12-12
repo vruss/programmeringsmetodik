@@ -104,7 +104,6 @@ void snake::handleInput()
 
 bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
 {
-    bool hasCollided = false;
     for (const auto& _snake: snakes)
     {
         // Skip checking collision against self
@@ -118,12 +117,11 @@ bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
         {
             if (collision::areColliding(head, otherTail))
             {
-                hasCollided = true;
-                break;
+                return true;
             }
         }
     }
-    return hasCollided;
+    return false;
 }
 
 std::shared_ptr<food> snake::isColliding(std::vector<std::shared_ptr<food>>& foodBowl)

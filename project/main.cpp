@@ -96,8 +96,6 @@ int main()
         // EVENT HANDLING
         while (window.pollEvent(event))
         {
-            snake1->handleEvents(event);
-
             if (event.type == sf::Event::KeyReleased)
             {
                 if (event.key.code == sf::Keyboard::Escape)
