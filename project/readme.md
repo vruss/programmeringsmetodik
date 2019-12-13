@@ -1,3 +1,3 @@
 # Final project
 
-Hello World!
+Slither local-multiplayer game written in C++ using SFML for graphics rendering
