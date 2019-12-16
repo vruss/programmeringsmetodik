@@ -60,11 +60,34 @@ int main()
     });
 
 
+    //// THIS CODE IS ONLY TEMPORARY
+    auto wall1 = std::make_shared<sf::RectangleShape>(snakeSize);
+    wall1->setSize(sf::Vector2f(wall1->getSize().x, videoMode.height));
+
+    auto wall2 = std::make_shared<sf::RectangleShape>(snakeSize);
+    wall2->setSize(sf::Vector2f(wall2->getSize().x, videoMode.height));
+    wall2->setPosition(sf::Vector2f(videoMode.width - snakeSize.x, 0));
+
+    auto wall3 = std::make_shared<sf::RectangleShape>(snakeSize);
+    wall3->setSize(sf::Vector2f(videoMode.width, wall3->getSize().y));
+
+    auto wall4 = std::make_shared<sf::RectangleShape>(snakeSize);
+    wall4->setSize(sf::Vector2f(videoMode.width, wall4->getSize().y));
+    wall4->setPosition(sf::Vector2f(0, videoMode.height - snakeSize.y));
+
+    std::vector<std::shared_ptr<sf::RectangleShape>> walls;
+    walls.emplace_back(wall1);
+    walls.emplace_back(wall2);
+    walls.emplace_back(wall3);
+    walls.emplace_back(wall4);
+    /////////
+
     //
     // Push drawable objects to rendering pool
     std::vector<std::shared_ptr<sf::Drawable>> drawableObjects;
     drawableObjects.insert(drawableObjects.begin(), snakes.begin(), snakes.end());
     drawableObjects.insert(drawableObjects.begin(), foodBowl.begin(), foodBowl.end());
+    drawableObjects.insert(drawableObjects.begin(), walls.begin(), walls.end());
 
 
     //
