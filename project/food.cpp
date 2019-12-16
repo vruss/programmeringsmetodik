@@ -6,7 +6,6 @@
 // File name: food.cpp
 //
 
-
 #include "food.h"
 
 

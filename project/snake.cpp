@@ -21,6 +21,7 @@ snake::snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboar
     // Make snake head
     head.setPosition(position);
     head.setOrigin(size.x / 2, size.y / 2);
+    head.setRotation(utility::getRandomFloat(0, 360));
     head.setFillColor(sf::Color::Red);
 
     // Grow snake body

@@ -31,24 +31,22 @@ int main()
     window.setVerticalSyncEnabled(true); // VSync
     window.setPosition(sf::Vector2i(0, 0));
 
-    sf::Font font;
-    if (!font.loadFromFile("resources/dejavu/DejaVuSansMono.ttf"))
-        return EXIT_FAILURE;
-
+    // Snake settings
     float snakeScale = 28;
     sf::Vector2f snakeSize(videoMode.height / snakeScale, videoMode.height / snakeScale);
     float snakeSpeed = snakeSize.x / snakeScale * 1.5;
 
+    // Food settings
     float foodScale = snakeScale * 1.5;
     sf::Vector2f foodSize(videoMode.height / foodScale, videoMode.height / foodScale);
     int maxFood = videoMode.height / foodScale;
 
     //
     // Create drawableObjects
-    auto snake1 = std::make_shared<snake>(sf::Vector2f(100, 100), snakeSize,
+    auto snake1 = std::make_shared<snake>(utility::getRandomPosition(window.getSize()), snakeSize,
                                           sf::Keyboard::A, sf::Keyboard::D,
                                           sf::Color::Cyan);
-    auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize,
+    auto snake2 = std::make_shared<snake>(utility::getRandomPosition(window.getSize()), snakeSize,
                                           sf::Keyboard::Left, sf::Keyboard::Right,
                                           sf::Color::Green);
     // Fill player snakes
