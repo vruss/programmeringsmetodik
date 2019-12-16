@@ -105,7 +105,7 @@ public:
      * @param foodBowl  all food pieces this snake can collide with
      * @return          the a pointer to the collided food piece
      */
-    std::shared_ptr<food> isColliding(std::vector<std::shared_ptr<food>>& foodBowl);
+    std::shared_ptr<food> isColliding(const std::vector<std::shared_ptr<food>>& foodBowl);
 
     /**
      * @brief   Resets the snake with a new position and small size

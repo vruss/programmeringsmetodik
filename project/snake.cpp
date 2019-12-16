@@ -124,7 +124,7 @@ bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
     return false;
 }
 
-std::shared_ptr<food> snake::isColliding(std::vector<std::shared_ptr<food>>& foodBowl)
+std::shared_ptr<food> snake::isColliding(const std::vector<std::shared_ptr<food>>& foodBowl)
 {
     std::shared_ptr<food> hasCollided = nullptr;
     for (const auto& foodPiece: foodBowl)
@@ -143,6 +143,7 @@ void snake::reset(const sf::Vector2f& newPosition)
 {
     // Move head to random position
     head.setPosition(newPosition);
+    head.setRotation(utility::getRandomFloat(0, 360));
 
     // Reset tail length
     tail.erase(tail.begin(), tail.end());

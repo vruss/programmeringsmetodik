@@ -51,31 +51,30 @@ int main()
     auto snake2 = std::make_shared<snake>(sf::Vector2f(100, 300), snakeSize,
                                           sf::Keyboard::Left, sf::Keyboard::Right,
                                           sf::Color::Green);
+    // Fill player snakes
     std::vector<std::shared_ptr<snake>> snakes({snake1, snake2});
 
-    std::vector<std::shared_ptr<food>> foodBowl;
+    // Fill food bowl
+    std::vector<std::shared_ptr<food>> foodBowl(maxFood);
+    std::generate(foodBowl.begin(), foodBowl.end(), [&foodSize, &window]
+    {
+        return std::make_shared<food>(foodSize, utility::getRandomPosition(window.getSize()));
+    });
+
 
     //
     // Push drawable objects to rendering pool
     std::vector<std::shared_ptr<sf::Drawable>> drawableObjects;
     drawableObjects.insert(drawableObjects.begin(), snakes.begin(), snakes.end());
+    drawableObjects.insert(drawableObjects.begin(), foodBowl.begin(), foodBowl.end());
 
 
     //
     // Graphics and event loop
     sf::Event event;
+    renderer gameRenderer(&window, drawableObjects);
     while (window.isOpen())
     {
-        renderer gameRenderer(&window, drawableObjects);
-
-        // Fill screen with food
-        if (foodBowl.size() < maxFood)
-        {
-            auto foodPiece = std::make_shared<food>(foodSize, utility::getRandomPosition(window.getSize()));
-            foodBowl.emplace_back(foodPiece);
-            drawableObjects.emplace_back(foodPiece);
-        }
-
         for (const auto& _snake: snakes)
         {
             // Check snake collision

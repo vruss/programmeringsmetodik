@@ -45,6 +45,15 @@ struct utility
      * @return          the new random position
      */
     static sf::Vector2f getRandomPosition(sf::Vector2u bounds);
+
+    /**
+     * @brief   Will return a random float from a real a uniform real distribution
+     *
+     * @param min   lowest possible value
+     * @param max   highest possible value
+     * @return      random float
+     */
+    static float getRandomFloat(float min, float max);
 };
 
 

@@ -22,9 +22,13 @@ float utility::radToDeg(float radians)
 
 sf::Vector2f utility::getRandomPosition(sf::Vector2u bounds)
 {
-    std::random_device rd;
-    std::uniform_real_distribution<float> xDist(0, bounds.x);
-    std::uniform_real_distribution<float> yDist(0, bounds.y);
+    return sf::Vector2f(getRandomFloat(0, bounds.x), getRandomFloat(0, bounds.y));
+}
 
-    return sf::Vector2f(xDist(rd), yDist(rd));
+float utility::getRandomFloat(float min, float max)
+{
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist(min, max);
+
+    return dist(rd);
 }
