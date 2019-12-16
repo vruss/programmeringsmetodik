@@ -38,7 +38,7 @@ int main()
     // Food settings
     float foodScale = snakeScale * 1.5;
     sf::Vector2f foodSize(videoMode.height / foodScale, videoMode.height / foodScale);
-    int maxFood = videoMode.height / foodScale;
+    int maxFood = videoMode.height / foodScale * 1.25;
 
     //
     // Create drawableObjects
