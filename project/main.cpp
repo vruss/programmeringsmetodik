@@ -5,7 +5,6 @@
 #include "renderer.h"
 #include "snake.h"
 #include "utility.h"
-#include "food.h"
 
 //TODO: https://github.com/SFML/SFML/wiki/Tutorial%3A-Manage-dynamic-key-binding
 
@@ -53,10 +52,13 @@ int main()
     std::vector<std::shared_ptr<snake>> snakes({snake1, snake2});
 
     // Fill food bowl
-    std::vector<std::shared_ptr<food>> foodBowl(maxFood);
+    std::vector<std::shared_ptr<sf::RectangleShape>> foodBowl(maxFood);
     std::generate(foodBowl.begin(), foodBowl.end(), [&foodSize, &window]
     {
-        return std::make_shared<food>(foodSize, utility::getRandomPosition(window.getSize()));
+        auto foodPiece = std::make_shared<sf::RectangleShape>(foodSize);
+        foodPiece->setPosition(utility::getRandomPosition(window.getSize()));
+        foodPiece->setFillColor(sf::Color::Red);
+        return foodPiece;
     });
 
 
@@ -85,9 +87,9 @@ int main()
     //
     // Push drawable objects to rendering pool
     std::vector<std::shared_ptr<sf::Drawable>> drawableObjects;
+    drawableObjects.insert(drawableObjects.begin(), walls.begin(), walls.end());
     drawableObjects.insert(drawableObjects.begin(), snakes.begin(), snakes.end());
     drawableObjects.insert(drawableObjects.begin(), foodBowl.begin(), foodBowl.end());
-    drawableObjects.insert(drawableObjects.begin(), walls.begin(), walls.end());
 
 
     //
@@ -103,12 +105,18 @@ int main()
             {
                 _snake->reset(utility::getRandomPosition(window.getSize()));
             }
+            // Check wall collision
+            if (_snake->isColliding(walls))
+            {
+                _snake->reset(utility::getRandomPosition(window.getSize()));
+            }
             // Check food collision
             if (auto foodPiece = _snake->isColliding(foodBowl))
             {
                 _snake->grow();
-                foodPiece->getFoodShape().setPosition(utility::getRandomPosition(window.getSize()));
+                foodPiece->setPosition(utility::getRandomPosition(window.getSize()));
             }
+
             _snake->handleInput();
             _snake->moveForward(snakeSpeed);
         }

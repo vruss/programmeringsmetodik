@@ -13,7 +13,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
-#include "food.h"
 
 // Default values for the snake
 #define T_RATE 1.75
@@ -105,7 +104,7 @@ public:
      * @param foodBowl  all food pieces this snake can collide with
      * @return          the a pointer to the collided food piece
      */
-    std::shared_ptr<food> isColliding(const std::vector<std::shared_ptr<food>>& foodBowl);
+    std::shared_ptr<sf::RectangleShape> isColliding(const std::vector<std::shared_ptr<sf::RectangleShape>>& foodBowl);
 
     /**
      * @brief   Resets the snake with a new position and small size

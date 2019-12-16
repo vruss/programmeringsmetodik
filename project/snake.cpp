@@ -125,12 +125,12 @@ bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
     return false;
 }
 
-std::shared_ptr<food> snake::isColliding(const std::vector<std::shared_ptr<food>>& foodBowl)
+std::shared_ptr<sf::RectangleShape> snake::isColliding(const std::vector<std::shared_ptr<sf::RectangleShape>>& foodBowl)
 {
-    std::shared_ptr<food> hasCollided = nullptr;
+    std::shared_ptr<sf::RectangleShape> hasCollided = nullptr;
     for (const auto& foodPiece: foodBowl)
     {
-        if (collision::areColliding(head, foodPiece->getFoodShape()))
+        if (collision::areColliding(head, *foodPiece.get()))
         {
             hasCollided = foodPiece;
             break;

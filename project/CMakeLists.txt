@@ -8,5 +8,5 @@ set(SFML_DIR "libs/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML COMPONENTS graphics system window REQUIRED)
 add_executable(project main.cpp renderer.cpp renderer.h snake.cpp snake.h utility.cpp utility.h
-       libs/rectangularBoundaryCollision.hpp food.cpp food.h)
+       libs/rectangularBoundaryCollision.hpp wallBuilder.cpp wallBuilder.h)
 target_link_libraries(project sfml-graphics sfml-system sfml-window)
