@@ -10,13 +10,44 @@
 #define PROJECT_WALLBUILDER_H
 
 
+#include <SFML/System.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
 class wallBuilder
 {
 private:
+    sf::Vector2f wallSize;
+    sf::Vector2u roomSize;
 
 public:
 
+    /**
+     * @brief   Class used to create walls around play area
+     *
+     * @param wallSize  size of the walls
+     * @param roomSize  the wall boundaries
+     */
+    wallBuilder(const sf::Vector2f& wallSize, const sf::Vector2u& roomSize);
 
+    /**
+     * @return  left wall piece
+     */
+    sf::RectangleShape buildLeftWall();
+
+    /**
+     * @return  left wall piece
+     */
+    sf::RectangleShape buildRightWall();
+
+    /**
+     * @return  top wall piece
+     */
+    sf::RectangleShape buildTopWall();
+
+    /**
+     * @return  down wall piece
+     */
+    sf::RectangleShape buildDownWall();
 };
 
 
