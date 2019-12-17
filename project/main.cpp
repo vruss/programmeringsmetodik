@@ -84,7 +84,7 @@ int main()
     renderer gameRenderer(&window, drawableObjects);
     while (window.isOpen())
     {
-        // SNAKE LOGIC
+        // SNAKE COLLISION CHECKS
         for (const auto& _snake: snakes)
         {
             // Check snake collision

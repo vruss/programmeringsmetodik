@@ -106,8 +106,13 @@ public:
      */
     std::shared_ptr<sf::RectangleShape> isColliding(const std::vector<std::shared_ptr<sf::RectangleShape>>& foodBowl);
 
+    /**
+     * @brief   Check if snake is colliding with other rectangle shape
+     *
+     * @param other other shape to check collision with
+     * @return      true if collision happened, false if not not
+     */
     bool isColliding(const sf::RectangleShape& other);
-
 
     /**
      * @brief   Resets the snake with a new position and small size
