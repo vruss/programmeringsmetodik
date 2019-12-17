@@ -13,6 +13,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+/**
+ * @brief   Class used to create walls around play area
+ */
 class wallBuilder
 {
 private:
@@ -22,7 +25,7 @@ private:
 public:
 
     /**
-     * @brief   Class used to create walls around play area
+     * @brief   Constructs a wall builder
      *
      * @param wallSize  size of the walls
      * @param roomSize  the wall boundaries
