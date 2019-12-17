@@ -105,16 +105,16 @@ void snake::handleInput()
 
 bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
 {
-    for (const auto& _snake: snakes)
+    for (const auto& otherSnake: snakes)
     {
         // Skip checking collision against self
-        if (_snake.get() == this)
+        if (otherSnake.get() == this)
         {
             continue;
         }
 
         // Look for a collision between this snake head and other snake body parts
-        for (auto& otherTail : _snake->getTail())
+        for (auto& otherTail : otherSnake->tail)
         {
             if (collision::areColliding(head, otherTail))
             {
@@ -139,6 +139,10 @@ std::shared_ptr<sf::RectangleShape> snake::isColliding(const std::vector<std::sh
     return hasCollided;
 }
 
+bool snake::isColliding(const sf::RectangleShape& other)
+{
+    return collision::areColliding(head, other);
+}
 
 void snake::reset(const sf::Vector2f& newPosition)
 {
@@ -204,12 +208,4 @@ const std::vector<sf::RectangleShape>& snake::getTail() const
 {
     return tail;
 }
-
-
-
-
-
-
-
-
 

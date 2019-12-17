@@ -15,7 +15,7 @@ int main()
     // Game wide settings
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    int videoModeSize = 8;
+    int videoModeSize = 6;
 
     // Get list of preferred resolutions and BPP, ordered best first
     auto videoModes = sf::VideoMode::getFullscreenModes();
@@ -84,25 +84,41 @@ int main()
     renderer gameRenderer(&window, drawableObjects);
     while (window.isOpen())
     {
+        // SNAKE LOGIC
         for (const auto& _snake: snakes)
         {
             // Check snake collision
-            if (_snake->isColliding(snakes))
+            for (const auto& otherSnake: snakes)
             {
-                _snake->reset(utility::getRandomPosition(window.getSize()));
+                if (otherSnake == _snake)
+                {
+                    continue;
+                }
+                for (const auto& otherTail: otherSnake->getTail())
+                {
+                    if (_snake->isColliding(otherTail))
+                    {
+                        _snake->reset(utility::getRandomPosition(window.getSize()));
+                    }
+                }
             }
             // Check wall collision
-            if (_snake->isColliding(walls))
+            for (const auto& wall: walls)
             {
-                _snake->reset(utility::getRandomPosition(window.getSize()));
+                if (_snake->isColliding(*wall.get()))
+                {
+                    _snake->reset(utility::getRandomPosition(window.getSize()));
+                }
             }
             // Check food collision
-            if (auto foodPiece = _snake->isColliding(foodBowl))
+            for (const auto& food: foodBowl)
             {
-                _snake->grow();
-                foodPiece->setPosition(utility::getRandomPosition(window.getSize()));
+                if (_snake->isColliding(*food.get()))
+                {
+                    _snake->grow();
+                    food->setPosition(utility::getRandomPosition(window.getSize()));
+                }
             }
-
             _snake->handleInput();
             _snake->moveForward(snakeSpeed);
         }
