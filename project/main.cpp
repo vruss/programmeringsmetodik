@@ -6,6 +6,7 @@
 #include "snake.h"
 #include "utility.h"
 #include "wallBuilder.h"
+#include "collisionHandler.h"
 
 //TODO: https://github.com/SFML/SFML/wiki/Tutorial%3A-Manage-dynamic-key-binding
 
@@ -82,43 +83,15 @@ int main()
     // Graphics and event loop
     sf::Event event;
     renderer gameRenderer(&window, drawableObjects);
+    collisionHandler _collisionHandler(foodBowl, walls, snakes, window.getSize());
     while (window.isOpen())
     {
         // SNAKE COLLISION CHECKS
+        _collisionHandler.handleCollisions();
+
+        // SNAKE INPUT LOGIC
         for (const auto& _snake: snakes)
         {
-            // Check snake collision
-            for (const auto& otherSnake: snakes)
-            {
-                if (otherSnake == _snake)
-                {
-                    continue;
-                }
-                for (const auto& otherTail: otherSnake->getTail())
-                {
-                    if (_snake->isColliding(otherTail))
-                    {
-                        _snake->reset(utility::getRandomPosition(window.getSize()));
-                    }
-                }
-            }
-            // Check wall collision
-            for (const auto& wall: walls)
-            {
-                if (_snake->isColliding(*wall.get()))
-                {
-                    _snake->reset(utility::getRandomPosition(window.getSize()));
-                }
-            }
-            // Check food collision
-            for (const auto& food: foodBowl)
-            {
-                if (_snake->isColliding(*food.get()))
-                {
-                    _snake->grow();
-                    food->setPosition(utility::getRandomPosition(window.getSize()));
-                }
-            }
             _snake->handleInput();
             _snake->moveForward(snakeSpeed);
         }

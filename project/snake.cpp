@@ -28,7 +28,6 @@ snake::snake(const sf::Vector2f& position, const sf::Vector2f& size, sf::Keyboar
     grow();
 }
 
-
 void
 snake::moveTailPiece(std::vector<sf::RectangleShape>::iterator tailPiece, const sf::Vector2f& prevPos)
 {
@@ -101,7 +100,6 @@ void snake::handleInput()
         rotateRight(T_RATE);
     }
 }
-
 
 bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
 {
