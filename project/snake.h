@@ -73,38 +73,9 @@ public:
     void grow();
 
     /**
-     * @brief   Handles user events
-     *
-     * @param event     type of event
-     */
-    void handleEvents(sf::Event& event);
-
-    /**
      * @brief   Handles user input for turning and boosting
      */
     void handleInput();
-
-    /**
-     * @brief   Checks if snake head is colliding with other snakes' tail
-     *
-     * This collision check takes snake rotation into account.
-     *
-     * @param snakes    all snakes this snake can collide with
-     * @return          true if a collision has occurred
-     */
-    bool isColliding(const std::vector<std::shared_ptr<snake>>& snakes);
-
-    /**
-     * @brief   Checks if snake head is colliding with food
-     *
-     * This collision check takes snake rotation into account.
-     * Will return a pointer to the collided food piece,
-     * or nullptr if no collision detected.
-     *
-     * @param foodBowl  all food pieces this snake can collide with
-     * @return          the a pointer to the collided food piece
-     */
-    std::shared_ptr<sf::RectangleShape> isColliding(const std::vector<std::shared_ptr<sf::RectangleShape>>& foodBowl);
 
     /**
      * @brief   Check if snake is colliding with other rectangle shape

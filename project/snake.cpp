@@ -78,17 +78,6 @@ void snake::grow()
     }
 }
 
-void snake::handleEvents(sf::Event& event)
-{
-    if (event.type == sf::Event::KeyReleased)
-    {
-        if (event.key.code == sf::Keyboard::G)
-        {
-            grow();
-        }
-    }
-}
-
 void snake::handleInput()
 {
     if (sf::Keyboard::isKeyPressed(leftKey))
@@ -99,42 +88,6 @@ void snake::handleInput()
     {
         rotateRight(T_RATE);
     }
-}
-
-bool snake::isColliding(const std::vector<std::shared_ptr<snake>>& snakes)
-{
-    for (const auto& otherSnake: snakes)
-    {
-        // Skip checking collision against self
-        if (otherSnake.get() == this)
-        {
-            continue;
-        }
-
-        // Look for a collision between this snake head and other snake body parts
-        for (auto& otherTail : otherSnake->tail)
-        {
-            if (collision::areColliding(head, otherTail))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-std::shared_ptr<sf::RectangleShape> snake::isColliding(const std::vector<std::shared_ptr<sf::RectangleShape>>& foodBowl)
-{
-    std::shared_ptr<sf::RectangleShape> hasCollided = nullptr;
-    for (const auto& foodPiece: foodBowl)
-    {
-        if (collision::areColliding(head, *foodPiece.get()))
-        {
-            hasCollided = foodPiece;
-            break;
-        }
-    }
-    return hasCollided;
 }
 
 bool snake::isColliding(const sf::RectangleShape& other)

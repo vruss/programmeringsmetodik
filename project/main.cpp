@@ -1,6 +1,6 @@
 #include <vector>
-#include <SFML/Graphics.hpp>
 #include <memory>
+#include <SFML/Graphics.hpp>
 
 #include "renderer.h"
 #include "snake.h"
@@ -8,7 +8,6 @@
 #include "wallBuilder.h"
 #include "collisionHandler.h"
 
-//TODO: https://github.com/SFML/SFML/wiki/Tutorial%3A-Manage-dynamic-key-binding
 
 int main()
 {
@@ -32,25 +31,24 @@ int main()
     window.setVerticalSyncEnabled(true); // VSync
     window.setPosition(sf::Vector2i(0, 0));
 
-    // Snake settings
+    //
+    // Object settings based on game resolution
     float snakeScale = 28;
     sf::Vector2f snakeSize(videoMode.height / snakeScale, videoMode.height / snakeScale);
     float snakeSpeed = snakeSize.x / snakeScale * 1.5;
 
-    // Food settings
     float foodScale = snakeScale * 1.5;
     sf::Vector2f foodSize(videoMode.height / foodScale, videoMode.height / foodScale);
     int maxFood = videoMode.height / foodScale * 1.25;
 
     //
-    // Create drawableObjects
+    // Create snakes
     auto snake1 = std::make_shared<snake>(utility::getRandomPosition(window.getSize()), snakeSize,
                                           sf::Keyboard::A, sf::Keyboard::D,
                                           sf::Color::Cyan);
     auto snake2 = std::make_shared<snake>(utility::getRandomPosition(window.getSize()), snakeSize,
                                           sf::Keyboard::Left, sf::Keyboard::Right,
                                           sf::Color::Green);
-    // Fill player snakes
     std::vector<std::shared_ptr<snake>> snakes({snake1, snake2});
 
     // Fill food bowl
@@ -64,12 +62,12 @@ int main()
     });
 
     // Create walls
-    wallBuilder wallBuilder(snakeSize, window.getSize());
+    wallBuilder _wallBuilder(snakeSize, window.getSize());
     std::vector<std::shared_ptr<sf::RectangleShape>> walls;
-    walls.emplace_back(std::make_shared<sf::RectangleShape>(wallBuilder.buildLeftWall()));
-    walls.emplace_back(std::make_shared<sf::RectangleShape>(wallBuilder.buildDownWall()));
-    walls.emplace_back(std::make_shared<sf::RectangleShape>(wallBuilder.buildRightWall()));
-    walls.emplace_back(std::make_shared<sf::RectangleShape>(wallBuilder.buildTopWall()));
+    walls.emplace_back(std::make_shared<sf::RectangleShape>(_wallBuilder.buildLeftWall()));
+    walls.emplace_back(std::make_shared<sf::RectangleShape>(_wallBuilder.buildDownWall()));
+    walls.emplace_back(std::make_shared<sf::RectangleShape>(_wallBuilder.buildRightWall()));
+    walls.emplace_back(std::make_shared<sf::RectangleShape>(_wallBuilder.buildTopWall()));
 
     //
     // Push drawable objects to rendering pool
